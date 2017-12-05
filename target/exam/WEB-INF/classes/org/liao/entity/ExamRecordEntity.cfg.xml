@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="org.liao.entity.ExamRecordEntity" table="exam_record">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="11" />
+            <generator class="identity"/>
+        </id>
+        <property name="time" type="java.lang.Integer" column="time" length="11"/>
+        <property name="selectWeek" type="java.lang.String" column="selectWeek" length="45"/>
+        <property name="title" type="java.lang.String" column="title" length="45"/>
+        <!-- 这里需要Parent一端设置inverse="true" cascade="all"-->
+        <list name="examQuestionEntities" lazy="false" inverse="true" cascade="all">
+            <key><column name="exam_record_id" /></key>
+            <index column="id" type="java.lang.Integer" />
+            <one-to-many class="org.liao.entity.ExamQuestionEntity" />
+        </list>
+    </class>
+
+
+    <class name="org.liao.entity.ExamQuestionEntity" table="exam_questions">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="11" />
+            <generator class="identity"/>
+        </id>
+        <property name="title" type="java.lang.String" column="title" length="45"/>
+        <property name="keys" type="java.lang.String" column="keys" length="45"/>
+        <property name="score" type="java.lang.Integer" column="score" length="45"/>
+        <property name="exam_record_id" type="java.lang.Integer" column="exam_record_id" length="11"/>
+        <property name="type_id" type="java.lang.Integer" column="type_id" length="11"/>
+        <property name="resolution" type="java.lang.String" column="resolution" length="200"/>
+        <property name="exam_difficulty_id" type="java.lang.Integer" column="exam_difficulty_id" length="11"/>
+        <property name="option_a" type="java.lang.String" column="option_a" length="45"/>
+        <property name="option_b" type="java.lang.String" column="option_b" length="45"/>
+        <property name="option_c" type="java.lang.String" column="option_c" length="45"/>
+        <property name="option_d" type="java.lang.String" column="option_d" length="45"/>
+        <property name="option_e" type="java.lang.String" column="option_e" length="45"/>
+        <property name="option_f" type="java.lang.String" column="option_f" length="45"/>
+        <property name="option_g" type="java.lang.String" column="option_g" length="45"/>
+        <property name="option_h" type="java.lang.String" column="option_h" length="45"/>
+    </class>
+</hibernate-mapping>
+

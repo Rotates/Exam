@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>online-exam手机版</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0 , maximum-scale=1.0, account-scalable=0">
+    <link rel="stylesheet" type="text/css" href="/static/css/apply.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/share.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/public.css">
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/swiper-2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/lazyload.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+            $("img").lazyload({
+                effect: "fadeIn"
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="wrap" class="clearfix overflow mg-auto">
+    <div class="i-head mg-auto overflow area border-bom">
+        testing
+        <input type="button" value="all answers">
+    </div>
+
+    <!--xxx-->
+    <div class="i-tab mg-auto overflow area clearfix">
+        <div class="tab-content clearfix overflow" id="con1">
+            <div class="clearfix tab-con2 tab-con-info">
+                <ul class="clearfix">
+                    <li>
+                        <a class="tab-con-href2 clearfix">
+                            <h4>帐号帐号帐号帐号帐号帐号帐号帐号帐号帐号考过的答卷</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <input type="checkbox">
+                        <h3>A:帐号帐号帐号帐号帐号帐号帐号帐号帐号帐号考过的答卷hahahahahhaha</h3>
+                    </li>
+                    <li>
+                        <input type="checkbox">
+                        <h3>B:帐号帐号帐号帐号帐号帐号帐号帐号帐号帐号考过的答卷hahahahahhaha</h3>
+                    </li>
+                    <li>
+                        <input type="checkbox">
+                        <h3>C:帐号帐号帐号帐号帐号帐号帐号帐号帐号帐号考过的答卷hahahahahhaha</h3>
+                    </li>
+                    <li>
+                        <input type="checkbox">
+                        <h3>D:帐号帐号帐号帐号帐号帐号帐号帐号帐号帐号考过的答卷hahahahahhaha</h3>
+                    </li>
+                    <li>
+                       <input type="button" value="previous">
+                        <input type="button" value="next">
+
+                        <input type="button" value="save">
+                        <input type="submit" value="submit">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--底部-->
+    <div style="margin-top:15px;display: block;border-bottom: solid 1px #FFF;border-top: solid 1px #cacaca;text-indent: -9999px;height: 0px;">
+        line
+    </div>
+    <div style="width: 100%; height: 3.8em; line-height: 3.8em; text-align: center;">online-exam手机版</div>
+
+</div>
+
+<!--<div class="return-top tianstion" title="返回顶部"></div>-->
+
+<div class="info-nr">
+    <div id="info-nr-phone" class="info-nr-phone">
+        <section id="toMenu"></section>
+        <div class="menu_01"><a href="../aboutMe/index.index.jsp"></a></div>
+        <div class="menu_02"><a href=""></a></div>
+        <div class="menu_03"><a href="../class/index.html"></a></div>
+        <div class="menu_04"><a href="../index.login.jsp"></a></div>
+    </div>
+</div>
+
+
+</body>
+<script type="text/javascript" src="/static/js/com.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var mySwiper = new Swiper('.swiper-container', {
+            pagination: '.pagination',
+            loop: true,
+            autoplay: 3000,
+            paginationClickable: true,
+            onSlideChangeStart: function () {
+                //回调函数
+            }
+        });
+        cTab("#tab1", "#con1");
+        cTab("#tab2", "#con2");
+    };
+</script>
+</html>
