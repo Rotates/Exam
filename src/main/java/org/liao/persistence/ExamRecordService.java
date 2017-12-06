@@ -82,4 +82,10 @@ public class ExamRecordService extends BaseService {
             return new ResponseModel(-1, "撤销失败！");
         }
     }
+
+    public Integer state(ExamRecordEntity e) {
+        ExamRecordEntity record = this.findById(e.getId());
+
+        return record.getIsStart();
+    }
 }

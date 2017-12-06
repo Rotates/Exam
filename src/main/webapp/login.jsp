@@ -108,7 +108,7 @@
 
 </div>
 
-<script src="${pageContext.request.contextPath}/static/js/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/static/js/jquery.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/static/js/supersized.3.2.7.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/supersized-init.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/honeySwitch.js" type="text/javascript"></script>
@@ -158,6 +158,9 @@
                 } else if (t.result == '2') {
                     alert("登录成功!");
                     //admin页面
+                } else if (t.result == '3') {
+                    alert("登录成功!");
+                    window.location.href='${pageContext.request.contextPath}'+t.url;
                 } else {
                     alert(t.result);
                     /*刷新验证码*/

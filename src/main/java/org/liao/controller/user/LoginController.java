@@ -6,12 +6,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.liao.entity.AccountEntity;
-import org.liao.entity.RoleEntity;
 import org.liao.entity.TeacherListEntity;
 import org.liao.persistence.TeacherService;
 import org.liao.persistence.UserService;
-import org.liao.util.AuthenticUtil;
 import org.liao.util.ResponseUtil;
 import org.liao.util.VerifyCodeUtils;
 import org.springframework.stereotype.Controller;
@@ -35,9 +35,6 @@ public class LoginController {
     @Resource
     private TeacherService teacherService;
 
-
-
-
     /**
      * 转向登录页面
      * @return
@@ -47,9 +44,6 @@ public class LoginController {
 
         return "login";
     }
-
-
-
 
     /**
      * 登录验证
@@ -63,6 +57,8 @@ public class LoginController {
                              HttpServletRequest request,
                              HttpServletResponse response) throws Exception{
 
+        SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+
         /*object状态码,error(-1),student(0), teacher(1), admin(2)*/
         JSONObject object = new JSONObject();
         HttpSession session = request.getSession(true);
@@ -74,7 +70,6 @@ public class LoginController {
             /*登录信息验证*/
             AccountEntity user = userService.findByUserName(account.getUserName());
             if (user == null) {
-                System.out.println("test");
                 TeacherListEntity teacher = teacherService.findTeacher(account.getUserName());
                 if (teacher == null) {
                     object.put("result","-1");
@@ -95,6 +90,8 @@ public class LoginController {
                         try {
                             subject.login(token);
                             String role = userService.getUserRole(account.getUserName());
+
+                            System.out.println("test role:" + role);
                             if (role.equals("teacher")) {
                                 object.put("result","1");
                             } else if (role.equals("manage")){
@@ -132,6 +129,11 @@ public class LoginController {
                         object.put("result","1");
                     } else if (role.equals("manage")){
                         object.put("result", "2");
+                    } else if (role.equals("student")) {
+                        System.out.println("teststudent");
+                        object.put("result", "3");
+                        object.put("url", savedRequest.getRequestUrl());
+
                     }
                 } catch (Exception e) {
                     System.out.println(e);
@@ -144,9 +146,6 @@ public class LoginController {
 
         ResponseUtil.write(response, object);
     }
-
-
-
 
     /**
      * 获取验证码的请求
@@ -174,9 +173,6 @@ public class LoginController {
         int w = 100, h = 30;
         VerifyCodeUtils.outputImage(w, h, response.getOutputStream(), verifyCode);
     }
-
-
-
 
     /**
      * 注销登录,删除在b端和s端的cookie值

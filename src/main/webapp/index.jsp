@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/apply.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/share.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/css/public.css">
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/swiper-2.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/swiper.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/lazyload.js"></script>
 
     <script type="text/javascript" charset="utf-8">
