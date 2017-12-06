@@ -1,6 +1,6 @@
 package org.liao.controller.user.student;
 
-import org.liao.persistence.UserService;
+import org.liao.persistence.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 public class AboutMeController {
 
     @Resource
-    private UserService userService;
+    private AccountService accountService;
 
     @RequestMapping("/aboutMe")
     public String aboutMe() {

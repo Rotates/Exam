@@ -1,6 +1,7 @@
 package org.liao.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "account", schema = "exam", catalog = "")
@@ -10,6 +11,7 @@ public class AccountEntity {
     private String password;
     private String verCode;
     private String rememberMe;
+    private Timestamp startTime;
 
 
     public String getRememberMe() {
@@ -55,6 +57,16 @@ public class AccountEntity {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Basic
+    @Column(name = "startTime")
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
     @Override

@@ -11,10 +11,20 @@
 <body>
 <div class="mind">
     <div class="swiper-container">
-        <div class="mindtop"> <span class="swiper-button-prev swiper-button-blue"></span>
+        <div class="mindtop">
+            <span class="swiper-button-prev swiper-button-blue"></span>
             <h4>生活常识选择题及答案</h4>
-            <span class="swiper-button-next swiper-button-blue"></span> </div>
+            <span class="swiper-button-next swiper-button-blue"></span>
+        </div>
+        <div class="mindmiddle">
+                <span class="sum-score"><img style="width: 25px;height: 25px; float:left;" src="${pageContext.request.contextPath}/static/img/score.png"> <h5 style="float: left">30分 </h5></span>
+                <%--<h5 style="float: left;">30分 &nbsp &nbsp</h5>--%>
+                <span class="progress-time"><img style="width: 25px;height: 25px; float: left;" src="${pageContext.request.contextPath}/static/img/progresstime1.png"> <h5 style="float: left">00:00:00</h5></span>
+
+
+        </div>
         <div class="swiper-wrapper">
+
             <dl class="swiper-slide">
                 <dt>1、“大煮干丝”是哪个菜系的代表菜之一( )</dt>
                 <dd>A、四川菜系</dd>
@@ -134,13 +144,9 @@
                 $(".subjuan").hide();
                 window.location.href="#"
             });
-        }
-
-        else{
+        } else{
             $(".maskwhite").hide();
         }
-
-
     });
 
 

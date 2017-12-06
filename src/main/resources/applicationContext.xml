@@ -140,6 +140,7 @@
 			<tx:method name="find*" propagation="REQUIRED"/>
 			<tx:method name="release*" propagation="REQUIRED"/>
 			<tx:method name="cancel*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
 			<tx:method name="*" read-only="true" />
 		</tx:attributes>
 	</tx:advice>

@@ -8,7 +8,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.liao.entity.AccountEntity;
-import org.liao.persistence.UserService;
+import org.liao.persistence.AccountService;
 import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +20,7 @@ public class MyRealm extends AuthorizingRealm {
 
 
     @Resource
-    private UserService userService;
+    private AccountService accountService;
 
     /*授权*/
     @Override
@@ -28,13 +28,13 @@ public class MyRealm extends AuthorizingRealm {
 
         //获取登录时输入的用户名
         String userName=(String) principalCollection.fromRealm(getName()).iterator().next();
-        AccountEntity account = userService.findByUserName(userName);
+        AccountEntity account = accountService.findByUserName(userName);
 
         if (account != null) {
             //权限信息对象info,用来存放查出的用户的所有的角色
             SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
 
-            String role = userService.getUserRole(account.getUserName());
+            String role = accountService.getUserRole(account.getUserName());
 
             Set<String> set = new HashSet<>();
             set.add(role);
@@ -53,7 +53,7 @@ public class MyRealm extends AuthorizingRealm {
 
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
 
-        AccountEntity account = userService.findByUserName(token.getUsername());
+        AccountEntity account = accountService.findByUserName(token.getUsername());
         if (account != null) {
 
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(account.getUserName(),

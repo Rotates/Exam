@@ -26,7 +26,7 @@ body{font-size:12px;font-size:1.2rem;font-family:"微软雅黑","宋体";backgro
 .mind .swiper-slide dt{ line-height: 34px;font-size: 15px; }
 .mind .swiper-slide dd{ font-size: 14px; line-height: 30px; }
 .mind .swiper-slide dd.chance{ color: #f19149; }
-.mind .swiper-pagination-bullet{ width: 2.4rem; height: 2.4rem; text-align: center; line-height: 2.4rem; font-size: 1.2rem color:#000; opacity: 1; background: rgba(0,0,0,0.2);}
+.mind .swiper-pagination-bullet{ width: 2.4rem; height: 2.4rem; text-align: center; line-height: 2.4rem; font-size: 1.2rem; color:#000; opacity: 1; background: rgba(0,0,0,0.2);}
 .mind span.curr{ color:#007aff; background-color: #fff; }
 .mind .swiper-pagination-bullet-active { color:#fff; background: #007aff;}
 .mind .swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet{margin: 3px;}
@@ -35,3 +35,39 @@ body{font-size:12px;font-size:1.2rem;font-family:"微软雅黑","宋体";backgro
 .subjuan .subyn{ width: 270px;  margin: 0 auto; margin-top: 20px; color: #3775e2; border-top:  1px solid #dcdcdc; padding-top: 10px; }
 .subjuan .subyn .fl-left{ width: 50%; border-right:1px solid #dcdcdc; text-align: center; box-sizing: border-box;  }
 .subjuan .subyn .fl-right{ width: 50%;  text-align: center;  }
+.mind .mindmiddle {
+    height: 30px;
+    line-height: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.mind .mindmiddle h4 {
+    color: #3775e2;
+    font-size: 10px;
+    text-align: center;
+}
+
+.mind .mindmiddle .sum-score {
+    margin: auto auto;
+    display: block;
+    width: 50px;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    left: -110px;
+    right: 0;
+    bottom: 0;
+}
+
+.mind .mindmiddle .progress-time {
+    margin: auto auto;
+    display: block;
+    width: 70px;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: -100px;
+    bottom: 0;
+}

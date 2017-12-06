@@ -11,7 +11,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.liao.entity.AccountEntity;
 import org.liao.entity.TeacherListEntity;
 import org.liao.persistence.TeacherService;
-import org.liao.persistence.UserService;
+import org.liao.persistence.AccountService;
 import org.liao.util.ResponseUtil;
 import org.liao.util.VerifyCodeUtils;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Resource
-    private UserService userService;
+    private AccountService accountService;
     @Resource
     private TeacherService teacherService;
 
@@ -68,7 +68,7 @@ public class LoginController {
         if (trueVerCode.equals(account.getVerCode().toLowerCase())) {
 
             /*登录信息验证*/
-            AccountEntity user = userService.findByUserName(account.getUserName());
+            AccountEntity user = accountService.findByUserName(account.getUserName());
             if (user == null) {
                 TeacherListEntity teacher = teacherService.findTeacher(account.getUserName());
                 if (teacher == null) {
@@ -89,7 +89,7 @@ public class LoginController {
                         Subject subject = SecurityUtils.getSubject();
                         try {
                             subject.login(token);
-                            String role = userService.getUserRole(account.getUserName());
+                            String role = accountService.getUserRole(account.getUserName());
 
                             System.out.println("test role:" + role);
                             if (role.equals("teacher")) {
@@ -124,7 +124,7 @@ public class LoginController {
                 Subject subject = SecurityUtils.getSubject();
                 try {
                     subject.login(token);
-                    String role = userService.getUserRole(account.getUserName());
+                    String role = accountService.getUserRole(account.getUserName());
                     if (role.equals("teacher")) {
                         object.put("result","1");
                     } else if (role.equals("manage")){

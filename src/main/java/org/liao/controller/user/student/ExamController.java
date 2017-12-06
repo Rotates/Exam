@@ -1,7 +1,12 @@
 package org.liao.controller.user.student;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.liao.controller.manage.teacher.ExamRecordController;
+import org.liao.entity.AccountEntity;
 import org.liao.entity.ExamQuestionEntity;
 import org.liao.entity.ExamRecordEntity;
+import org.liao.persistence.AccountService;
 import org.liao.persistence.ExamRecordService;
 import org.liao.persistence.QuestionService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -27,6 +33,8 @@ public class ExamController {
     private ExamRecordService examRecordService;
     @Resource
     private QuestionService questionService;
+    @Resource
+    private AccountService accountService;
 
 
     @RequestMapping("/online/exam/{id}")
@@ -43,7 +51,10 @@ public class ExamController {
         } else if (state == -1) {
             //转到404页面
         }
-
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        Session session = SecurityUtils.getSubject().getSession();
+        String sessionUserName = (String) session.getAttribute("user");
+        accountService.updateStartTime(d, sessionUserName);
         modelAndView.setViewName("student/exam");
 
         return modelAndView;

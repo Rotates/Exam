@@ -83,6 +83,8 @@ public class ExamRecordService extends BaseService {
         }
     }
 
+
+
     public Integer state(ExamRecordEntity e) {
         ExamRecordEntity record = this.findById(e.getId());
 

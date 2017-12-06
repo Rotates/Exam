@@ -2,6 +2,8 @@ package org.liao.persistence;
 
 import org.liao.entity.AccountEntity;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  */
 
 @Repository
-public class UserService extends BaseService {
+public class AccountService extends BaseService {
 
     public AccountEntity findByUserName(String userName) {
 
@@ -39,5 +41,14 @@ public class UserService extends BaseService {
         } else {
             return null;
         }
+    }
+
+    public void updateStartTime(Timestamp t, String userName) {
+
+        String sql = "update AccountEntity a set a.startTime=? where userName=?";
+        getCurrentSession().createQuery(sql)
+                .setTimestamp(0, t)
+                .setString(1, userName).executeUpdate();
+
     }
 }
