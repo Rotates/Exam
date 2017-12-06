@@ -3,6 +3,7 @@ package org.liao.controller.manage.teacher;
 import net.sf.json.JSONObject;
 import org.liao.entity.ExamRecordEntity;
 import org.liao.persistence.ExamRecordService;
+import org.liao.util.QRCodeUtils;
 import org.liao.util.ResponseModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -51,9 +53,14 @@ public class ExamRecordController {
 
     @RequestMapping("release/{id}")
     @ResponseBody
-    public Object release(@PathVariable("id") Integer id) {
+    public Object release(@PathVariable("id") Integer id, HttpServletRequest request)
+            throws IOException {
 
-        ResponseModel response = examRecordService.release(new ExamRecordEntity(id));
+        String url = "test";
+        String qrcodeName = QRCodeUtils.qrCodeEncode(url, request);
+        ExamRecordEntity e = new ExamRecordEntity(id);
+        e.setQrcodeUrl(qrcodeName);
+        ResponseModel response = examRecordService.release(e);
         return response;
     }
 

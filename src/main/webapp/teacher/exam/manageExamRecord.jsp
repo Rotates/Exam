@@ -81,6 +81,10 @@
                                                        href="${pageContext.request.contextPath}/teacher/exam/examRecord/cancel/${record.id}">
                                                         <span class="label label-success">已发布</span>
                                                     </a>
+                                                    <a class="marg-l-5" download="${record.qrcodeUrl}.png"
+                                                       href="${pageContext.request.contextPath}/static/qrcode/${record.qrcodeUrl}.png">
+                                                        <span class="label label-primary">二维码</span>
+                                                    </a>
                                                 </c:when>
                                             </c:choose>
 

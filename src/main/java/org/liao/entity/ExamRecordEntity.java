@@ -15,6 +15,7 @@ public class ExamRecordEntity {
     private int isStart;
     private String userName;
     private Timestamp createDate;
+    private String qrcodeUrl;
     private List<ExamQuestionEntity> questionEntityList;
 
     @Id
@@ -86,6 +87,15 @@ public class ExamRecordEntity {
 
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
+    }
+
+    @Basic
+    @Column(name = "qrcodeUrl")
+    public String getQrcodeUrl() {
+        return qrcodeUrl;
+    }
+    public void setQrcodeUrl(String qrcodeUrl) {
+        this.qrcodeUrl = qrcodeUrl;
     }
 
     @Override

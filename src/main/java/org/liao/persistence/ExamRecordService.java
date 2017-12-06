@@ -4,6 +4,7 @@ import org.liao.entity.ExamRecordEntity;
 import org.liao.util.ResponseModel;
 import org.springframework.stereotype.Repository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Repository
@@ -51,10 +52,11 @@ public class ExamRecordService extends BaseService {
             return new ResponseModel(-1, "记录不存在！");
         }
         try {
-            String sql = "update ExamRecordEntity e set e.isStart=? where e.id=?";
+            String sql = "update ExamRecordEntity e set e.isStart=?,e.qrcodeUrl=? where e.id=?";
             getCurrentSession().createQuery(sql)
                     .setInteger(0, 1)
-                    .setInteger(1, record.getId()).executeUpdate();
+                    .setString(1, e.getQrcodeUrl())
+                    .setInteger(2, record.getId()).executeUpdate();
 
             return new ResponseModel(1, "发布成功！");
         } catch (Exception e0) {
