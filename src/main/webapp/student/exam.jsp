@@ -17,11 +17,16 @@
             <span class="swiper-button-next swiper-button-blue"></span>
         </div>
         <div class="mindmiddle">
-                <span class="sum-score"><img style="width: 25px;height: 25px; float:left;" src="${pageContext.request.contextPath}/static/img/score.png"> <h5 style="float: left">30分 </h5></span>
+                <span class="sum-score">
+                    <img style="width: 25px;height: 25px; float:left;" src="${pageContext.request.contextPath}/static/img/score.png">
+                    <h4 style="float: left">&nbsp;30分</h4>
+                    <input id="startTime" type="hidden" value="${startTime}">
+                </span>
                 <%--<h5 style="float: left;">30分 &nbsp &nbsp</h5>--%>
-                <span class="progress-time"><img style="width: 25px;height: 25px; float: left;" src="${pageContext.request.contextPath}/static/img/progresstime1.png"> <h5 style="float: left">00:00:00</h5></span>
-
-
+                <span class="progress-time">
+                    <img style="width: 25px;height: 25px; float: left;" src="${pageContext.request.contextPath}/static/img/progresstime.png">
+                    <h4 class="time-h5" style="float: left"></h4>
+                </span>
         </div>
         <div class="swiper-wrapper">
 
@@ -149,6 +154,20 @@
         }
     });
 
+    var test = $("#startTime").val();
+    test = test.replace(/:/g,',');
+    test = test.replace(' ', ',');
+    var test2 = test.split(',');
+    var starttime = new Date(test2[0], test2[1], test2[2], test2[3]);
+
+    setInterval(function () {
+        var nowtime = new Date();
+        var time = nowtime - starttime;
+        var hour = parseInt(time / 1000 / 60 / 60 % 24);
+        var minute = parseInt(time / 1000 / 60 % 60);
+        var seconds = parseInt(time / 1000 % 60);
+        $('.time-h5').html(hour + ":" + minute + ":" + seconds);
+    }, 1000);
 
 </script>
 </html>

@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -43,6 +45,11 @@ public class ExamController {
         ModelAndView modelAndView = new ModelAndView();
         Integer state = examRecordService.state(new ExamRecordEntity(id));
 
+        Session session = SecurityUtils.getSubject().getSession();
+        String sessionUserName = (String) session.getAttribute("user");
+
+        AccountEntity a = accountService.findByUserName(sessionUserName);
+
         if (state == 1) {
             List<ExamQuestionEntity> list = questionService.findByRecordId(id);
             modelAndView.addObject("questions", list);
@@ -51,10 +58,23 @@ public class ExamController {
         } else if (state == -1) {
             //转到404页面
         }
-        Timestamp d = new Timestamp(System.currentTimeMillis());
-        Session session = SecurityUtils.getSubject().getSession();
-        String sessionUserName = (String) session.getAttribute("user");
-        accountService.updateStartTime(d, sessionUserName);
+
+        DateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+
+        if (a.getStartTime() != null) {
+
+            String t = (String)session.getAttribute("startTime");
+            System.out.println(t);
+            modelAndView.addObject("startTime", t);
+        } else {
+
+            Timestamp d = new Timestamp(System.currentTimeMillis());
+            accountService.updateStartTime(d, sessionUserName);
+            session.setAttribute("startTime", sdf.format(d));
+            modelAndView.addObject("startTime", a.getStartTime());
+        }
+
+
         modelAndView.setViewName("student/exam");
 
         return modelAndView;
