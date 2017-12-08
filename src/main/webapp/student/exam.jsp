@@ -20,7 +20,7 @@
                 <span class="sum-score">
                     <img style="width: 25px;height: 25px; float:left;" src="${pageContext.request.contextPath}/static/img/score.png">
                     <h4 style="float: left">&nbsp;30分</h4>
-                    <input id="startTime" type="hidden" value="${startTime}">
+                    <input id="endTime" type="hidden" value="${endTime}">
                 </span>
                 <%--<h5 style="float: left;">30分 &nbsp &nbsp</h5>--%>
                 <span class="progress-time">
@@ -85,6 +85,7 @@
 </body>
 <script src="${pageContext.request.contextPath}/static/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/swiper.min.js"></script>
+<script src="${pageContext.request.contextPath}/static/manage/js/layer.js"></script>
 <script type="text/javascript">
 
     //题目轮播
@@ -154,20 +155,25 @@
         }
     });
 
-    var test = $("#startTime").val();
-    test = test.replace(/:/g,',');
-    test = test.replace(' ', ',');
-    var test2 = test.split(',');
-    var starttime = new Date(test2[0], test2[1], test2[2], test2[3]);
+    var endTime = $("#endTime").val();
+    endTime = endTime.replace(/:/g,',');
+    endTime = endTime.replace(' ', ',');
+    var endtimes = endTime.split(',');
+
+    var end = new Date(endtimes[0],
+        parseInt(endtimes[1])-1,
+        parseInt(endtimes[2]),
+        endtimes[3],
+        endtimes[4],
+        endtimes[5]);
 
     setInterval(function () {
-        var nowtime = new Date();
-        var time = nowtime - starttime;
+        var now = new Date();
+        var time = end - now;
         var hour = parseInt(time / 1000 / 60 / 60 % 24);
         var minute = parseInt(time / 1000 / 60 % 60);
         var seconds = parseInt(time / 1000 % 60);
         $('.time-h5').html(hour + ":" + minute + ":" + seconds);
     }, 1000);
-
 </script>
 </html>

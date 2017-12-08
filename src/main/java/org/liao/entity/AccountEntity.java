@@ -11,7 +11,7 @@ public class AccountEntity {
     private String password;
     private String verCode;
     private String rememberMe;
-    private Timestamp startTime;
+    private Timestamp endTime;
 
 
     public String getRememberMe() {
@@ -59,15 +59,17 @@ public class AccountEntity {
         this.password = password;
     }
 
+
     @Basic
-    @Column(name = "startTime")
-    public Timestamp getStartTime() {
-        return startTime;
+    @Column(name = "endTime")
+    public Timestamp getEndTime() {
+        return endTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
+
 
     @Override
     public boolean equals(Object o) {

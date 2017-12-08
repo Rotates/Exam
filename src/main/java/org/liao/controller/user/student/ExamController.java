@@ -43,37 +43,48 @@ public class ExamController {
     public ModelAndView online_exam(@PathVariable("id") Integer id) {
 
         ModelAndView modelAndView = new ModelAndView();
-        Integer state = examRecordService.state(new ExamRecordEntity(id));
+        ExamRecordEntity e = examRecordService.findById(id);
 
         Session session = SecurityUtils.getSubject().getSession();
         String sessionUserName = (String) session.getAttribute("user");
 
         AccountEntity a = accountService.findByUserName(sessionUserName);
 
-        if (state == 1) {
+        if (e.getIsStart() == 1) {
             List<ExamQuestionEntity> list = questionService.findByRecordId(id);
             modelAndView.addObject("questions", list);
-        } else if (state == 0) {
+
+            DateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+
+            if (a.getEndTime() != null) {
+
+                System.out.println("test");
+                String t = (String)session.getAttribute("endTime");
+                System.out.println("test:"+t);
+                if (t == null || t.equals("")) {
+
+                    Timestamp timestamp = a.getEndTime();
+                    session.setAttribute("endTime", sdf.format(timestamp));
+                    System.out.println(sdf.format(timestamp));
+                    modelAndView.addObject("endTime", sdf.format(timestamp));
+                }
+                modelAndView.addObject("endTime", t);
+            } else {
+
+                Timestamp d = new Timestamp(System.currentTimeMillis() + e.getTime()*60*1000);
+                accountService.updateStartTime(d, sessionUserName);
+                session.setAttribute("endTime", sdf.format(d));
+                modelAndView.addObject("endTime", sdf.format(d));
+            }
+
+        } else if (e.getIsStart() == 0) {
             //转到404页面
-        } else if (state == -1) {
+            return null;
+
+        } else if (e.getIsStart() == -1) {
             //转到404页面
+            return null;
         }
-
-        DateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-
-        if (a.getStartTime() != null) {
-
-            String t = (String)session.getAttribute("startTime");
-            System.out.println(t);
-            modelAndView.addObject("startTime", t);
-        } else {
-
-            Timestamp d = new Timestamp(System.currentTimeMillis());
-            accountService.updateStartTime(d, sessionUserName);
-            session.setAttribute("startTime", sdf.format(d));
-            modelAndView.addObject("startTime", a.getStartTime());
-        }
-
 
         modelAndView.setViewName("student/exam");
 
