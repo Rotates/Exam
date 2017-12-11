@@ -58,14 +58,11 @@ public class ExamController {
 
             if (a.getEndTime() != null) {
 
-                System.out.println("test");
                 String t = (String)session.getAttribute("endTime");
-                System.out.println("test:"+t);
                 if (t == null || t.equals("")) {
 
                     Timestamp timestamp = a.getEndTime();
                     session.setAttribute("endTime", sdf.format(timestamp));
-                    System.out.println(sdf.format(timestamp));
                     modelAndView.addObject("endTime", sdf.format(timestamp));
                 }
                 modelAndView.addObject("endTime", t);

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -29,40 +30,43 @@
                 </span>
         </div>
         <div class="swiper-wrapper">
+            <c:forEach var="question" items="${questions}" varStatus="status">
+                <dl class="swiper-slide">
+                    <dt>${status.index + 1}.${question.title}</dt>
 
-            <dl class="swiper-slide">
-                <dt>1、“大煮干丝”是哪个菜系的代表菜之一( )</dt>
-                <dd>A、四川菜系</dd>
-                <dd>B、山东菜系</dd>
-                <dd>C、广东菜系</dd>
-                <dd>D、淮扬菜系</dd>
-            </dl>
-            <dl class="swiper-slide">
-                <dt>2. 吃冰淇淋不解渴主要是因为它:</dt>
-                <dd>A、含蛋白质</dd>
-                <dd>B、含脂肪</dd>
-                <dd>C、含糖</dd>
-            </dl>
-            <dl class="swiper-slide">
-                <dt>3. 工笔是哪种绘画形式的技法</dt>
-                <dd>A、水彩画</dd>
-                <dd>B、油画</dd>
-                <dd>C、水粉画</dd>
-                <dd>D、国画</dd>
-            </dl>
-            <dl class="swiper-slide">
-                <dt>4、“大煮干丝”是哪个菜系的代表菜之一( )</dt>
-                <dd>A、四川菜系</dd>
-                <dd>B、山东菜系</dd>
-                <dd>C、广东菜系</dd>
-                <dd>D、淮扬菜系</dd>
-            </dl>
-            <dl class="swiper-slide">
-                <dt>5. 吃冰淇淋不解渴主要是因为它:</dt>
-                <dd>A、含蛋白质</dd>
-                <dd>B、含脂肪</dd>
-                <dd>C、含糖</dd>
-            </dl>
+                    <c:if test="${not empty question.option_a}">
+                        <dd>A、${question.option_a}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_b}">
+                        <dd>B、${question.option_b}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_c}">
+                        <dd>C、${question.option_c}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_d}">
+                        <dd>D、${question.option_d}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_e}">
+                        <dd>E、${question.option_e}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_f}">
+                        <dd>F、${question.option_f}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_g}">
+                        <dd>G、${question.option_g}</dd>
+                    </c:if>
+
+                    <c:if test="${not empty question.option_h}">
+                        <dd>H、${question.option_h}</dd>
+                    </c:if>
+                </dl>
+            </c:forEach>
         </div>
         <div class="swiper-pagination"></div>
         <div class="mindfot">
@@ -85,7 +89,7 @@
 </body>
 <script src="${pageContext.request.contextPath}/static/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/swiper.min.js"></script>
-<script src="${pageContext.request.contextPath}/static/manage/js/layer.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/layer-mobile/layer.js"></script>
 <script type="text/javascript">
 
     //题目轮播
@@ -139,19 +143,28 @@
         var lengths = $(".swiper-pagination span.curr").length;
 
         if(lengths==allnum){
-            $(".maskwhite").show();
-            $(".subjuan").show();
-            $("#subno").click(function(){//取消
-                $(".maskwhite").hide();
-                $(".subjuan").hide();
+            //底部对话框
+            layer.open({
+                content: '你已经完成所有试题,确认提交吗?'
+                ,btn: ['提交', '取消']
+                ,skin: 'footer'
+                ,yes: function(index){
+                    //loading带文字
+                    layer.open({
+                        type: 2
+                        ,content: '提交中'
+                    });
+
+                }
             });
-            $("#subyes").click(function(){//取消
-                $(".maskwhite").hide();
-                $(".subjuan").hide();
-                window.location.href="#"
-            });
+
         } else{
-            $(".maskwhite").hide();
+            //底部提示
+            layer.open({
+                content: '试题未作答完!'
+                ,skin: 'footer'
+            });
+
         }
     });
 
