@@ -53,6 +53,7 @@ public class ExamController {
         if (e.getIsStart() == 1) {
             List<ExamQuestionEntity> list = questionService.findByRecordId(id);
             modelAndView.addObject("questions", list);
+            modelAndView.addObject("record", e);
 
             DateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 

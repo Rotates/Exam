@@ -14,7 +14,7 @@
     <div class="swiper-container">
         <div class="mindtop">
             <span class="swiper-button-prev swiper-button-blue"></span>
-            <h4>生活常识选择题及答案</h4>
+            <h4>${record.title}</h4>
             <span class="swiper-button-next swiper-button-blue"></span>
         </div>
         <div class="mindmiddle">
@@ -32,38 +32,46 @@
         <div class="swiper-wrapper">
             <c:forEach var="question" items="${questions}" varStatus="status">
                 <dl class="swiper-slide">
-                    <dt>${status.index + 1}.${question.title}</dt>
+                    <dt id="${question.id}">${status.index + 1}.${question.title}</dt>
+                    <c:if test="${question.type_id == '1' || question.type_id == '2'}">
+                        <c:if test="${not empty question.option_a}">
+                            <dd>A、${question.option_a}</dd>
+                        </c:if>
 
-                    <c:if test="${not empty question.option_a}">
-                        <dd>A、${question.option_a}</dd>
+                        <c:if test="${not empty question.option_b}">
+                            <dd>B、${question.option_b}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_c}">
+                            <dd>C、${question.option_c}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_d}">
+                            <dd>D、${question.option_d}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_e}">
+                            <dd>E、${question.option_e}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_f}">
+                            <dd>F、${question.option_f}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_g}">
+                            <dd>G、${question.option_g}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_h}">
+                            <dd>H、${question.option_h}</dd>
+                        </c:if>
                     </c:if>
-
-                    <c:if test="${not empty question.option_b}">
-                        <dd>B、${question.option_b}</dd>
+                    
+                    <c:if test="${question.type_id == '3'}">
+                        ?
                     </c:if>
-
-                    <c:if test="${not empty question.option_c}">
-                        <dd>C、${question.option_c}</dd>
-                    </c:if>
-
-                    <c:if test="${not empty question.option_d}">
-                        <dd>D、${question.option_d}</dd>
-                    </c:if>
-
-                    <c:if test="${not empty question.option_e}">
-                        <dd>E、${question.option_e}</dd>
-                    </c:if>
-
-                    <c:if test="${not empty question.option_f}">
-                        <dd>F、${question.option_f}</dd>
-                    </c:if>
-
-                    <c:if test="${not empty question.option_g}">
-                        <dd>G、${question.option_g}</dd>
-                    </c:if>
-
-                    <c:if test="${not empty question.option_h}">
-                        <dd>H、${question.option_h}</dd>
+                    <c:if test="${question.type_id == '4'}">
+                        对或者错
                     </c:if>
                 </dl>
             </c:forEach>
