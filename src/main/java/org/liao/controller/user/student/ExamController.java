@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,6 +40,11 @@ public class ExamController {
     private AccountService accountService;
 
 
+    /**
+     * 根据试卷id，抽取试卷，进行考试。
+     * @param id
+     * @return
+     */
     @RequestMapping("/online/exam/{id}")
     public ModelAndView online_exam(@PathVariable("id") Integer id) {
 
@@ -47,13 +53,16 @@ public class ExamController {
 
         Session session = SecurityUtils.getSubject().getSession();
         String sessionUserName = (String) session.getAttribute("user");
-
         AccountEntity a = accountService.findByUserName(sessionUserName);
 
         if (e.getIsStart() == 1) {
             List<ExamQuestionEntity> list = questionService.findByRecordId(id);
+
+            //随机打乱试题顺序
+            Collections.shuffle(list);
             modelAndView.addObject("questions", list);
             modelAndView.addObject("record", e);
+            modelAndView.addObject("userName", sessionUserName);
 
             DateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>心理健康评估</title>
+    <title>考试中</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/swiper.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 </head>
@@ -15,6 +15,7 @@
         <div class="mindtop">
             <span class="swiper-button-prev swiper-button-blue"></span>
             <h4>${record.title}</h4>
+            <input type="hidden" id="userName" value="${userName}">
             <span class="swiper-button-next swiper-button-blue"></span>
         </div>
         <div class="mindmiddle">
@@ -100,6 +101,23 @@
 <script src="${pageContext.request.contextPath}/static/js/layer-mobile/layer.js"></script>
 <script type="text/javascript">
 
+    $(document).ready(function () {
+        var userName = $("#userName").val();
+        var cookie_name = getCookie(userName);
+        var dt = $("dt");
+        var dts = [];
+        for (i=0,len=dt.length; i<len; i++) {
+            dts.push({id:dt[i].id,key:""});
+        }
+
+        alert(JSON.stringify(dts));
+        if (cookie_name == null || cookie_name == '') {
+            setCookie(userName, JSON.stringify(dts)+'');
+        }
+
+        alert(getCookie(userName));
+    });
+
     //题目轮播
     var swiper = new Swiper('.swiper-container', {
 
@@ -144,6 +162,9 @@
     //交卷
     $("#numok").click(function(){
 
+        var cookie_key = document.cookie.match("liao");
+        alert(cookie_key);
+
         $(".swiper-pagination").hide();
 
         var allnum = $("#totnum").text();
@@ -157,6 +178,7 @@
                 ,btn: ['提交', '取消']
                 ,skin: 'footer'
                 ,yes: function(index){
+                    layer.close(index);
                     //loading带文字
                     layer.open({
                         type: 2
@@ -196,5 +218,27 @@
         var seconds = parseInt(time / 1000 % 60);
         $('.time-h5').html(hour + ":" + minute + ":" + seconds);
     }, 1000);
+
+    function setCookie(name,value) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() + 8.5*60*60*1000);
+        document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    }
+
+    function getCookie(c_name)
+    {
+        if (document.cookie.length>0)
+        {
+            c_start=document.cookie.indexOf(c_name + "=")
+            if (c_start!=-1)
+            {
+                c_start=c_start + c_name.length+1
+                c_end=document.cookie.indexOf(";",c_start)
+                if (c_end==-1) c_end=document.cookie.length
+                return unescape(document.cookie.substring(c_start,c_end))
+            }
+        }
+        return ""
+    }
 </script>
 </html>
