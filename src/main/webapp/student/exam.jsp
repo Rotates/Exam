@@ -36,35 +36,35 @@
                     <dt id="${question.id}">${status.index + 1}.${question.title}</dt>
                     <c:if test="${question.type_id == '1' || question.type_id == '2'}">
                         <c:if test="${not empty question.option_a}">
-                            <dd>A、${question.option_a}</dd>
+                            <dd id="A">A、${question.option_a}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_b}">
-                            <dd>B、${question.option_b}</dd>
+                            <dd id="B">B、${question.option_b}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_c}">
-                            <dd>C、${question.option_c}</dd>
+                            <dd id="C">C、${question.option_c}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_d}">
-                            <dd>D、${question.option_d}</dd>
+                            <dd id="D">D、${question.option_d}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_e}">
-                            <dd>E、${question.option_e}</dd>
+                            <dd id="E">E、${question.option_e}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_f}">
-                            <dd>F、${question.option_f}</dd>
+                            <dd id="F">F、${question.option_f}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_g}">
-                            <dd>G、${question.option_g}</dd>
+                            <dd id="G">G、${question.option_g}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_h}">
-                            <dd>H、${question.option_h}</dd>
+                            <dd id="H">H、${question.option_h}</dd>
                         </c:if>
                     </c:if>
                     
@@ -101,21 +101,20 @@
 <script src="${pageContext.request.contextPath}/static/js/layer-mobile/layer.js"></script>
 <script type="text/javascript">
 
+    var userName = $("#userName").val();
+
     $(document).ready(function () {
-        var userName = $("#userName").val();
+
         var cookie_name = getCookie(userName);
-        var dt = $("dt");
-        var dts = [];
-        for (i=0,len=dt.length; i<len; i++) {
-            dts.push({id:dt[i].id,key:""});
-        }
 
-        alert(JSON.stringify(dts));
         if (cookie_name == null || cookie_name == '') {
-            setCookie(userName, JSON.stringify(dts)+'');
+            var dt = $("dt");
+            var dts = [];
+            for (i=0,len=dt.length; i<len; i++) {
+                dts.push({id:dt[i].id,key:""});
+            }
+            setCookie(userName, JSON.stringify(dts));
         }
-
-        alert(getCookie(userName));
     });
 
     //题目轮播
@@ -157,16 +156,33 @@
         $(this).addClass("chance");
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
+
+        var cookie_name = JSON.parse(getCookie(userName));
+
+        var id = $(this).parent("dl").find("dt").attr("id");
+
+        var key = $(this).attr("id");
+
+        var t = cookie_name.filter((p) => {
+            return p.id == id;
+        });
+
+        var index = cookie_name.indexOf(t[0]);
+        index > -1 && cookie_name.splice(index, 1);
+        cookie_name.push({id:id,key:key});
+
+        delCookie(userName);
+
+        setCookie(userName, JSON.stringify(cookie_name));
+
+        alert(getCookie(userName));
+
     });
 
     //交卷
     $("#numok").click(function(){
 
-        var cookie_key = document.cookie.match("liao");
-        alert(cookie_key);
-
         $(".swiper-pagination").hide();
-
         var allnum = $("#totnum").text();
         $("#subnum").text(allnum);
         var lengths = $(".swiper-pagination span.curr").length;
@@ -225,20 +241,27 @@
         document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
     }
 
-    function getCookie(c_name)
-    {
-        if (document.cookie.length>0)
-        {
-            c_start=document.cookie.indexOf(c_name + "=")
-            if (c_start!=-1)
-            {
-                c_start=c_start + c_name.length+1
-                c_end=document.cookie.indexOf(";",c_start)
-                if (c_end==-1) c_end=document.cookie.length
-                return unescape(document.cookie.substring(c_start,c_end))
+    function getCookie(c_name) {
+        if (document.cookie.length>0) {
+            c_start=document.cookie.indexOf(c_name + "=");
+            if (c_start!=-1) {
+                c_start=c_start + c_name.length+1;
+                c_end=document.cookie.indexOf(";",c_start);
+                if (c_end==-1)
+                    c_end=document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
             }
         }
         return ""
+    }
+
+    function delCookie(name)
+    {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null)
+            document.cookie= name + "="+cval+";expires="+exp.toGMTString();
     }
 </script>
 </html>
