@@ -127,8 +127,6 @@
 
         paginationClickable: true,
 
-
-
         paginationBulletRender: function (index, className) {
             $("#totnum").text(index+1);//总页码
             return '<span class="' + className + '">' + (index + 1) + '</span>';
@@ -141,8 +139,6 @@
         }
 
     });
-
-
 
     //点击底部出现题目数
     $("#showall").click(function(){
@@ -172,11 +168,7 @@
         cookie_name.push({id:id,key:key});
 
         delCookie(userName);
-
         setCookie(userName, JSON.stringify(cookie_name));
-
-        alert(getCookie(userName));
-
     });
 
     //交卷
@@ -226,13 +218,27 @@
         endtimes[4],
         endtimes[5]);
 
-    setInterval(function () {
+    var interval = setInterval(function () {
         var now = new Date();
         var time = end - now;
         var hour = parseInt(time / 1000 / 60 / 60 % 24);
         var minute = parseInt(time / 1000 / 60 % 60);
         var seconds = parseInt(time / 1000 % 60);
         $('.time-h5').html(hour + ":" + minute + ":" + seconds);
+
+        if (hour == 0 && minute == 2 && seconds == 0) {
+            alert("离考试结束还有2分钟!");
+        }
+
+        if (hour == 0 && minute == 0 && seconds == 0) {
+            alert("考试时间到！即将收卷！");
+
+            //关闭时间循环
+            clearInterval(interval);
+
+            //提交答案请求
+        }
+
     }, 1000);
 
     function setCookie(name,value) {
@@ -255,8 +261,7 @@
         return ""
     }
 
-    function delCookie(name)
-    {
+    function delCookie(name) {
         var exp = new Date();
         exp.setTime(exp.getTime() - 1);
         var cval=getCookie(name);
