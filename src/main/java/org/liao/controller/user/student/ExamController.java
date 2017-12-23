@@ -97,4 +97,10 @@ public class ExamController {
 
         return modelAndView;
     }
+
+    @RequestMapping("/submit/exam")
+    public void submit() {
+
+    }
+
 }

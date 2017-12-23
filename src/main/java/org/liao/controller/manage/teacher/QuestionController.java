@@ -186,15 +186,20 @@ public class QuestionController {
             int rownum = sheet.getLastRowNum();// 获取总行数
             List<ExamQuestionEntity> list = new ArrayList<>();
 
+            System.out.println(rownum);
             for (int i = 1; i <= rownum; i++) {
                 Row row = sheet.getRow(i);
+                Cell test = row.getCell(1);
+                System.out.println(test.getStringCellValue());
 
                 List<String> data = new ArrayList<>();
 
                 for (int j = 0; j < sheet.getRow(0).getLastCellNum(); j++) {
                     data.add("");
                 }
-                for (int j = 0; j < row.getLastCellNum(); j++) {
+
+                System.out.println();
+                for (int j = 0; j < sheet.getRow(0).getLastCellNum(); j++) {
                     if (row.getCell(j) != null) {
                         Cell celldata = row.getCell(j);
                         if (celldata.getCellType() == Cell.CELL_TYPE_STRING)

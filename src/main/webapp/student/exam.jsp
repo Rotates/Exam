@@ -32,9 +32,9 @@
         </div>
         <div class="swiper-wrapper">
             <c:forEach var="question" items="${questions}" varStatus="status">
-                <dl class="swiper-slide">
-                    <dt id="${question.id}">${status.index + 1}.${question.title}</dt>
-                    <c:if test="${question.type_id == '1' || question.type_id == '2'}">
+                    <c:if test="${question.type_id == '1'}">
+                        <dl class="swiper-slide">
+                        <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
                         <c:if test="${not empty question.option_a}">
                             <dd id="A">A、${question.option_a}</dd>
                         </c:if>
@@ -66,15 +66,46 @@
                         <c:if test="${not empty question.option_h}">
                             <dd id="H">H、${question.option_h}</dd>
                         </c:if>
+                        </dl>
                     </c:if>
-                    
-                    <c:if test="${question.type_id == '3'}">
-                        ?
-                    </c:if>
-                    <c:if test="${question.type_id == '4'}">
-                        对或者错
-                    </c:if>
-                </dl>
+
+                <c:if test="${question.type_id == '2'}">
+                    <dl class="swiper-slide">
+                        <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
+                        <c:if test="${not empty question.option_a}">
+                            <dd id="A">A、${question.option_a}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_b}">
+                            <dd id="B">B、${question.option_b}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_c}">
+                            <dd id="C">C、${question.option_c}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_d}">
+                            <dd id="D">D、${question.option_d}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_e}">
+                            <dd id="E">E、${question.option_e}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_f}">
+                            <dd id="F">F、${question.option_f}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_g}">
+                            <dd id="G">G、${question.option_g}</dd>
+                        </c:if>
+
+                        <c:if test="${not empty question.option_h}">
+                            <dd id="H">H、${question.option_h}</dd>
+                        </c:if>
+                    </dl>
+                </c:if>
+
             </c:forEach>
         </div>
         <div class="swiper-pagination"></div>
@@ -148,8 +179,19 @@
 
     //选择答案
     $("dl.swiper-slide dd").click(function(){
-        $(this).parent("dl").find("dd").removeClass("chance");
-        $(this).addClass("chance");
+
+        var dl_class = $(this).parent('dl').attr('class');
+        if ($(this).hasClass('chance')) {
+            $(this).removeClass('chance');
+        }
+
+        if (dl_class == 1 || dl_class == '1') {
+            $(this).parent("dl").find("dd").removeClass("chance");
+            $(this).addClass("chance");
+        } else if (dl_class == 2 || dl_class == '2') {
+            $(this).addClass("chance");
+        }
+
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
 
@@ -237,6 +279,23 @@
             clearInterval(interval);
 
             //提交答案请求
+            alert("提交试卷");
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/submit/exam',
+                type: 'post',
+                data: {userName:userName, password:password, verCode:verCode, rememberMe:rememberMe },
+                dataType: 'json',
+                beforeSend: function () {
+                    alert("before");
+                },
+                error: function () {
+                    alert("error");
+                },
+                success: function (t) {
+
+                }
+            });
         }
 
     }, 1000);
