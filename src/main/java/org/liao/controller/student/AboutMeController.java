@@ -1,4 +1,4 @@
-package org.liao.controller.user.student;
+package org.liao.controller.student;
 
 import org.liao.persistence.AccountService;
 import org.springframework.stereotype.Controller;

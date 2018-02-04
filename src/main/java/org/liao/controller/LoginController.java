@@ -1,4 +1,4 @@
-package org.liao.controller.user;
+package org.liao.controller;
 
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -10,12 +10,13 @@ import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
 import org.liao.entity.AccountEntity;
 import org.liao.entity.TeacherListEntity;
-import org.liao.persistence.TeacherService;
 import org.liao.persistence.AccountService;
+import org.liao.persistence.TeacherService;
 import org.liao.util.ResponseUtil;
 import org.liao.util.VerifyCodeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

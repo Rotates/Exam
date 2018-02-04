@@ -1,8 +1,7 @@
-package org.liao.controller.user.student;
+package org.liao.controller.student;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
-import org.liao.controller.manage.teacher.ExamRecordController;
 import org.liao.entity.AccountEntity;
 import org.liao.entity.ExamQuestionEntity;
 import org.liao.entity.ExamRecordEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

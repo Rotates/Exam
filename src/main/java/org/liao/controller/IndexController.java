@@ -1,4 +1,4 @@
-package org.liao.controller.user;
+package org.liao.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
