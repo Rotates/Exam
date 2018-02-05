@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -6,6 +7,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>考试中</title>
+    <link href="${pageContext.request.contextPath}/static/img/favicon.ico" rel="shortcut icon">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/swiper.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/main.css">
 </head>
@@ -106,6 +108,20 @@
                     </dl>
                 </c:if>
 
+                <c:if test="${question.type_id == '3'}">
+                    <dl class="swiper-slide">
+                        <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
+                        <input type="text">
+                    </dl>
+                </c:if>
+
+                <c:if test="${question.type_id == '4'}">
+                    <dl class="swiper-slide">
+                        <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
+                        <input type="radio" name="${question.id}" value="1">正确<br>
+                        <input type="radio" name="${question.id}" value="0">错误
+                    </dl>
+                </c:if>
             </c:forEach>
         </div>
         <div class="swiper-pagination"></div>
@@ -161,8 +177,6 @@
         paginationBulletRender: function (index, className) {
             $("#totnum").text(index+1);//总页码
             return '<span class="' + className + '">' + (index + 1) + '</span>';
-
-
         },
 
         onSlideChangeEnd: function(swiper){
@@ -179,8 +193,7 @@
 
     //选择答案
     $("dl.swiper-slide dd").click(function(){
-
-        var dl_class = $(this).parent('dl').attr('class');
+        var dl_class = $(this).parent('dl').children('dt').attr('class');
         if ($(this).hasClass('chance')) {
             $(this).removeClass('chance');
         }
@@ -201,6 +214,7 @@
 
         var key = $(this).attr("id");
 
+        //lambda表达式过滤
         var t = cookie_name.filter((p) => {
             return p.id == id;
         });
@@ -213,13 +227,47 @@
         setCookie(userName, JSON.stringify(cookie_name));
     });
 
+    $("dl.swiper-slide input:radio").click(function () {
+        var indexnum = $(this).parent("dl").index();
+        $(".swiper-pagination span").eq(indexnum).addClass("curr");
+
+        var cookie_name = JSON.parse(getCookie(userName));
+
+        var id = $(this).parent("dl").find("dt").attr("id");
+
+        var key = $(this).attr("value");
+
+        //lambda表达式过滤
+        var t = cookie_name.filter((p) => {
+            return p.id == id;
+        });
+
+        var index = cookie_name.indexOf(t[0]);
+        index > -1 && cookie_name.splice(index, 1);
+        cookie_name.push({id:id,key:key});
+
+        alert(key);
+
+        delCookie(userName);
+        setCookie(userName, JSON.stringify(cookie_name));
+    });
+
+    $("dl.swiper-slide input:text").click(function () {
+        var indexnum = $(this).parent("dl").index();
+        $(".swiper-pagination span").eq(indexnum).addClass("curr");
+    });
+
+
+
     //交卷
     $("#numok").click(function(){
 
         $(".swiper-pagination").hide();
         var allnum = $("#totnum").text();
+        alert(allnum)
         $("#subnum").text(allnum);
         var lengths = $(".swiper-pagination span.curr").length;
+        alert(lengths)
 
         if(lengths==allnum){
             //底部对话框
@@ -284,7 +332,7 @@
             $.ajax({
                 url: '${pageContext.request.contextPath}/submit/exam',
                 type: 'post',
-                data: {userName:userName, password:password, verCode:verCode, rememberMe:rememberMe },
+                data: {},
                 dataType: 'json',
                 beforeSend: function () {
                     alert("before");

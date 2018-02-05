@@ -131,10 +131,8 @@ public class LoginController {
                     } else if (role.equals("manage")){
                         object.put("result", "2");
                     } else if (role.equals("student")) {
-                        System.out.println("teststudent");
                         object.put("result", "3");
                         object.put("url", savedRequest.getRequestUrl());
-
                     }
                 } catch (Exception e) {
                     System.out.println(e);

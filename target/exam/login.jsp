@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link href="${pageContext.request.contextPath}/static/img/favicon.ico" rel="shortcut icon">
     <!-- CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/reset.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/supersized.css">

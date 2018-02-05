@@ -81,11 +81,16 @@ public class QuestionController {
         }
 
         String regex = "当前校历(.*)教学周";
-        String current = GetHtml.getCurrentWeek(regex, GetHtml.getPage("http://jiaowu.sicau.edu.cn/web/web/web/index.asp"));
-        String t = current.substring(current.length()-2, current.length());
+        /*String current = GetHtml.getCurrentWeek(regex, GetHtml.getPage("http://jiaowu.sicau.edu.cn/web/web/web/index.asp"));
+        String t = current.substring(current.length()-2, current.length());*/
+
+        //这是临时t,后需撤销
+        String t = "12345";
         char[] c = t.toCharArray();
 
-
+        //因放假校历改变,所以硬编码
+        c[0] = 'd';
+        c[1] = '8';
         if (c[0] >= '1' && c[0] <= '9')
             QuestionController.currentWeek = String.valueOf(c[0]) + String.valueOf(c[1]);
         else

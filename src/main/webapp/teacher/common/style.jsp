@@ -5,7 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<link href="favicon.ico" rel="shortcut icon">
+<link href="${pageContext.request.contextPath}/static/img/favicon.ico" rel="shortcut icon">
 <link href="${pageContext.request.contextPath}/static/manage/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/static/manage/css/font-awesome.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/static/manage/css/AdminLTE.css" rel="stylesheet">

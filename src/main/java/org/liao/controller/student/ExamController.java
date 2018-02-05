@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,10 +55,51 @@ public class ExamController {
         AccountEntity a = accountService.findByUserName(sessionUserName);
 
         if (e.getIsStart() == 1) {
+            List<ExamQuestionEntity> singleSelect = new ArrayList<>();
+            List<ExamQuestionEntity> multipleSelect = new ArrayList<>();
+            List<ExamQuestionEntity> fill = new ArrayList<>();
+            List<ExamQuestionEntity> judg = new ArrayList<>();
+
             List<ExamQuestionEntity> list = questionService.findByRecordId(id);
 
+            //试题分类
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getType_id() == 1) {
+                    singleSelect.add(list.get(i));
+                } else if (list.get(i).getType_id() == 2) {
+                    multipleSelect.add(list.get(i));
+                } else if (list.get(i).getType_id() == 3) {
+                    fill.add(list.get(i));
+                } else if (list.get(i).getType_id() == 4) {
+                    judg.add(list.get(i));
+                }
+            }
+
+
             //随机打乱试题顺序
-            Collections.shuffle(list);
+            Collections.shuffle(singleSelect);
+            Collections.shuffle(multipleSelect);
+            Collections.shuffle(fill);
+            Collections.shuffle(judg);
+
+            list.clear();
+
+            for (int i = 0; i < singleSelect.size(); i++) {
+                list.add(singleSelect.get(i));
+            }
+
+            for (int i = 0; i < multipleSelect.size(); i++) {
+                list.add(multipleSelect.get(i));
+            }
+
+            for (int i = 0; i < fill.size(); i++) {
+                list.add(fill.get(i));
+            }
+
+            for (int i = 0; i < judg.size(); i++) {
+                list.add(judg.get(i));
+            }
+
             modelAndView.addObject("questions", list);
             modelAndView.addObject("record", e);
             modelAndView.addObject("userName", sessionUserName);
@@ -82,16 +124,16 @@ public class ExamController {
                 modelAndView.addObject("endTime", sdf.format(d));
             }
 
+            modelAndView.setViewName("student/exam");
+
         } else if (e.getIsStart() == 0) {
             //转到404页面
-            return null;
+            modelAndView.setViewName("student/404");
 
         } else if (e.getIsStart() == -1) {
             //转到404页面
-            return null;
+            modelAndView.setViewName("student/404");
         }
-
-        modelAndView.setViewName("student/exam");
 
         return modelAndView;
     }

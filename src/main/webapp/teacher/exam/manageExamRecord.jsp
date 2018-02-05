@@ -17,11 +17,7 @@
     <jsp:include page="${pageContext.request.contextPath}/teacher/common/header.jsp"/>
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>文章()</h1>
-            <ol class="breadcrumb">
-                <li><a href="/index"><i class="fa fa-dashboard"></i> 主页</a></li>
-                <li class="active">文章管理</li>
-            </ol>
+
         </section>
         <section class="content">
             <div class="row">
