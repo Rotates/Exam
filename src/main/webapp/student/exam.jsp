@@ -111,7 +111,7 @@
                 <c:if test="${question.type_id == '3'}">
                     <dl class="swiper-slide">
                         <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
-                        <input type="text">
+                        <input name="${question.id}" type="text">
                     </dl>
                 </c:if>
 
@@ -156,9 +156,10 @@
 
         if (cookie_name == null || cookie_name == '') {
             var dt = $("dt");
-            var dts = [];
+            var dts = {};
             for (i=0,len=dt.length; i<len; i++) {
-                dts.push({id:dt[i].id,key:""});
+                var key = dt[i].id;
+                dts[key] = "";
             }
             setCookie(userName, JSON.stringify(dts));
         }
@@ -208,48 +209,42 @@
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
 
-        var cookie_name = JSON.parse(getCookie(userName));
+        var cookie = JSON.parse(getCookie(userName));
 
         var id = $(this).parent("dl").find("dt").attr("id");
-
         var key = $(this).attr("id");
 
-        //lambda表达式过滤
-        var t = cookie_name.filter((p) => {
-            return p.id == id;
-        });
-
-        var index = cookie_name.indexOf(t[0]);
-        index > -1 && cookie_name.splice(index, 1);
-        cookie_name.push({id:id,key:key});
+        //过滤
+        for (var t in cookie) {
+           if (t == id) {
+               cookie[t] = key;
+           }
+        }
 
         delCookie(userName);
-        setCookie(userName, JSON.stringify(cookie_name));
+        setCookie(userName, JSON.stringify(cookie));
     });
 
+    //判断题
     $("dl.swiper-slide input:radio").click(function () {
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
 
-        var cookie_name = JSON.parse(getCookie(userName));
+        var cookie = JSON.parse(getCookie(userName));
 
         var id = $(this).parent("dl").find("dt").attr("id");
 
         var key = $(this).attr("value");
 
-        //lambda表达式过滤
-        var t = cookie_name.filter((p) => {
-            return p.id == id;
-        });
-
-        var index = cookie_name.indexOf(t[0]);
-        index > -1 && cookie_name.splice(index, 1);
-        cookie_name.push({id:id,key:key});
-
-        alert(key);
+        //过滤修改
+        for (var t in cookie) {
+            if (t == id) {
+                cookie[t] = key;
+            }
+        }
 
         delCookie(userName);
-        setCookie(userName, JSON.stringify(cookie_name));
+        setCookie(userName, JSON.stringify(cookie));
     });
 
     $("dl.swiper-slide input:text").click(function () {
@@ -262,12 +257,19 @@
     //交卷
     $("#numok").click(function(){
 
+        var c = $('.swiper-wrapper').find(':text');
+
+        var cookie = JSON.parse(getCookie(userName));
+        for (var i=0; i < c.length; i++) {
+            var k = c.eq(i).attr('name');
+            var v = c.eq(i).val();
+            cookie[k] = v;
+        }
+
         $(".swiper-pagination").hide();
         var allnum = $("#totnum").text();
-        alert(allnum)
         $("#subnum").text(allnum);
         var lengths = $(".swiper-pagination span.curr").length;
-        alert(lengths)
 
         if(lengths==allnum){
             //底部对话框
@@ -283,6 +285,22 @@
                         ,content: '提交中'
                     });
 
+                    //ajax提交答案
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/student/submit/exam',
+                        type: 'post',
+                        data: {keys:JSON.stringify(cookie)},
+                        dataType: 'json',
+                        beforeSend: function () {
+                            alert("before");
+                        },
+                        error: function () {
+                            alert("error");
+                        },
+                        success: function (t) {
+                            alert("finish")
+                        }
+                    });
                 }
             });
 

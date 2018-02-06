@@ -1,5 +1,6 @@
 package org.liao.controller.student;
 
+import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.liao.entity.AccountEntity;
@@ -139,8 +140,9 @@ public class ExamController {
     }
 
     @RequestMapping("/submit/exam")
-    public void submit() {
-
+    public String submit(String keys) {
+        System.out.println(keys);
+        return "student/finished";
     }
 
 }
