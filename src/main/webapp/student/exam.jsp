@@ -38,35 +38,35 @@
                         <dl class="swiper-slide">
                         <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
                         <c:if test="${not empty question.option_a}">
-                            <dd id="A">A、${question.option_a}</dd>
+                            <dd title="A">A、${question.option_a}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_b}">
-                            <dd id="B">B、${question.option_b}</dd>
+                            <dd title="B">B、${question.option_b}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_c}">
-                            <dd id="C">C、${question.option_c}</dd>
+                            <dd title="C">C、${question.option_c}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_d}">
-                            <dd id="D">D、${question.option_d}</dd>
+                            <dd title="D">D、${question.option_d}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_e}">
-                            <dd id="E">E、${question.option_e}</dd>
+                            <dd title="E">E、${question.option_e}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_f}">
-                            <dd id="F">F、${question.option_f}</dd>
+                            <dd title="F">F、${question.option_f}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_g}">
-                            <dd id="G">G、${question.option_g}</dd>
+                            <dd title="G">G、${question.option_g}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_h}">
-                            <dd id="H">H、${question.option_h}</dd>
+                            <dd title="H">H、${question.option_h}</dd>
                         </c:if>
                         </dl>
                     </c:if>
@@ -75,35 +75,35 @@
                     <dl class="swiper-slide">
                         <dt id="${question.id}" class="${question.type_id}">${status.index + 1}.${question.title}</dt>
                         <c:if test="${not empty question.option_a}">
-                            <dd id="A">A、${question.option_a}</dd>
+                            <dd title="A">A、${question.option_a}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_b}">
-                            <dd id="B">B、${question.option_b}</dd>
+                            <dd title="B">B、${question.option_b}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_c}">
-                            <dd id="C">C、${question.option_c}</dd>
+                            <dd title="C">C、${question.option_c}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_d}">
-                            <dd id="D">D、${question.option_d}</dd>
+                            <dd title="D">D、${question.option_d}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_e}">
-                            <dd id="E">E、${question.option_e}</dd>
+                            <dd title="E">E、${question.option_e}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_f}">
-                            <dd id="F">F、${question.option_f}</dd>
+                            <dd title="F">F、${question.option_f}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_g}">
-                            <dd id="G">G、${question.option_g}</dd>
+                            <dd title="G">G、${question.option_g}</dd>
                         </c:if>
 
                         <c:if test="${not empty question.option_h}">
-                            <dd id="H">H、${question.option_h}</dd>
+                            <dd title="H">H、${question.option_h}</dd>
                         </c:if>
                     </dl>
                 </c:if>
@@ -152,16 +152,38 @@
 
     $(document).ready(function () {
 
-        var cookie_name = getCookie(userName);
-
-        if (cookie_name == null || cookie_name == '') {
-            var dt = $("dt");
+        var cookie = getCookie(userName);
+        var dt = $("dt");
+        if (cookie == null || cookie == '') {
             var dts = {};
             for (i=0,len=dt.length; i<len; i++) {
                 var key = dt[i].id;
                 dts[key] = "";
             }
             setCookie(userName, JSON.stringify(dts));
+        } else {
+            var json_class = JSON.parse(cookie);
+            alert(JSON.stringify(json_class))
+            //将答案写上html标签上
+            for (var t in json_class) {
+                alert(t)
+                var dt = $("#" + t);
+
+                if (dt.attr('class') == '1') {
+
+                    var dd = $("#" + t).parent("dl").find("dd");
+                    alert(dd.length)
+                    for (i=0; i<dd.length; i++) {
+
+                        //获取一个HTMLElement对象,不能直接用便签语法,因为这里已经变成了对象
+                        alert(dd[i].title)
+                        if (dd[i].title == json_class[t]) {
+                            alert('test')
+                            $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance")
+                        }
+                    }
+                }
+            }
         }
     });
 
@@ -212,7 +234,7 @@
         var cookie = JSON.parse(getCookie(userName));
 
         var id = $(this).parent("dl").find("dt").attr("id");
-        var key = $(this).attr("id");
+        var key = $(this).attr("title");
 
         //过滤
         for (var t in cookie) {
@@ -280,7 +302,7 @@
                 ,yes: function(index){
                     layer.close(index);
                     //loading带文字
-                    layer.open({
+                    var submit_log = layer.open({
                         type: 2
                         ,content: '提交中'
                     });
@@ -291,14 +313,13 @@
                         type: 'post',
                         data: {keys:JSON.stringify(cookie)},
                         dataType: 'json',
-                        beforeSend: function () {
-                            alert("before");
-                        },
                         error: function () {
                             alert("error");
                         },
                         success: function (t) {
-                            alert("finish")
+                            layer.close(submit_log);
+                            window.location.href='${pageContext.request.contextPath}/student/exam/finished';
+                            /*layer.msg('交卷成功!')*/
                         }
                     });
                 }

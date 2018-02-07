@@ -9,12 +9,14 @@ import org.liao.entity.ExamRecordEntity;
 import org.liao.persistence.AccountService;
 import org.liao.persistence.ExamRecordService;
 import org.liao.persistence.QuestionService;
+import org.liao.util.ResponseUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -140,9 +142,19 @@ public class ExamController {
     }
 
     @RequestMapping("/submit/exam")
-    public String submit(String keys) {
-        System.out.println(keys);
+    public String submit(String keys, HttpServletResponse response) throws Exception {
+
+        //改卷代码
+
+        JSONObject object = new JSONObject();
+        object.put("success", true);
+
+        ResponseUtil.write(response, object);
         return "student/finished";
     }
 
+    @RequestMapping("/exam/finished")
+    public String examFinished() {
+        return "student/finished";
+    }
 }
