@@ -160,9 +160,10 @@
             }
             setCookie(userName, JSON.stringify(dts));
         } else {
-            alert(cookie)
+            /*将答案写上html标签上*/
             var json_class = JSON.parse(cookie);
-            //将答案写上html标签上
+
+            /*单项选择题与多项选择题*/
             for (var t in json_class) {
                 var dt = $("#" + t);
                 var dd = $("#" + t).parent("dl").find("dd");
@@ -199,12 +200,15 @@
                     }
                 }
 
+                /*填空题与判断题*/
                 if (dd.length == 0 && dt.attr('class') == '3') {
                     $('#'+t).siblings("[name='"+t+"']").attr("value", json_class[t]);
                     var indexnum = dt.parent("dl").index();
                     $(".swiper-pagination span").eq(indexnum).addClass("curr");
-                } else if (dd.length == 0 && dt.attr('class') == '3') {
-
+                } else if (dd.length == 0 && dt.attr('class') == '4') {
+                    $('#'+t).siblings("[value='"+json_class[t]+"']").attr('checked', true);
+                    var indexnum1 = dt.parent("dl").index();
+                    $(".swiper-pagination span").eq(indexnum1).addClass("curr");
                 }
             }
         }
