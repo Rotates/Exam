@@ -166,23 +166,35 @@
             alert(JSON.stringify(json_class))
             //将答案写上html标签上
             for (var t in json_class) {
-                alert(t)
+
                 var dt = $("#" + t);
+                var dd = $("#" + t).parent("dl").find("dd");
 
-                if (dt.attr('class') == '1') {
+                for (i=0; i<dd.length; i++) {
+                    if (dt.attr('class') == '1') {
+                        //获取一个HTMLElement对象,不能直接用便签语法,因为这里已经变成了对象
+                        if (dd[i].title == json_class[t]) {
+                            $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance")
+                        }
+                    } /*else if (dt.attr('class') == '2') {
 
-                    var dd = $("#" + t).parent("dl").find("dd");
-                    alert(dd.length)
+                    }*/
+                }
+
+                /*if (dt.attr('class') == '1') {
                     for (i=0; i<dd.length; i++) {
 
                         //获取一个HTMLElement对象,不能直接用便签语法,因为这里已经变成了对象
-                        alert(dd[i].title)
                         if (dd[i].title == json_class[t]) {
                             alert('test')
                             $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance")
                         }
                     }
-                }
+                } else if (dt.attr('class') == '2') {
+                    for (i=0; i<dd.length; i++) {
+
+                    }
+                }*/
             }
         }
     });
@@ -217,34 +229,55 @@
     //选择答案
     $("dl.swiper-slide dd").click(function(){
         var dl_class = $(this).parent('dl').children('dt').attr('class');
-        if ($(this).hasClass('chance')) {
-            $(this).removeClass('chance');
-        }
-
-        if (dl_class == 1 || dl_class == '1') {
-            $(this).parent("dl").find("dd").removeClass("chance");
-            $(this).addClass("chance");
-        } else if (dl_class == 2 || dl_class == '2') {
-            $(this).addClass("chance");
-        }
-
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
-
         var cookie = JSON.parse(getCookie(userName));
-
         var id = $(this).parent("dl").find("dt").attr("id");
         var key = $(this).attr("title");
 
-        //过滤
-        for (var t in cookie) {
-           if (t == id) {
-               cookie[t] = key;
-           }
+        /*单选题与多选题*/
+        if (dl_class == 1 || dl_class == '1') {
+            //更换答案
+            var bool = new Boolean($(this).hasClass('chance'))
+            if (bool.toString() == 'false') {
+                $(this).parent("dl").find("dd").removeClass("chance");
+                $(this).addClass('chance');
+                var id = $(this).parent("dl").find("dt").attr("id");
+                var key = $(this).attr("title");
+                //过滤修改
+                for (var t in cookie) {
+                    if (t == id) {
+                        cookie[t] = key;
+                    }
+                }
+            }
+        } else if (dl_class == 2 || dl_class == '2') {
+            if ($(this).hasClass('chance')) {
+
+                //过滤修改
+                for (var t in cookie) {
+                    if (t == id) {
+                        //如果答案不是本身就修改
+                        if (cookie[t].length != 1) {
+                            cookie[t] = cookie[t].replace(key, '');
+                            $(this).removeClass('chance');
+                        }
+                    }
+                }
+            } else {
+                $(this).addClass('chance');
+                //过滤修改
+                for (var t in cookie) {
+                    if (t == id) {
+                        cookie[t] += key;
+                    }
+                }
+            }
         }
 
         delCookie(userName);
         setCookie(userName, JSON.stringify(cookie));
+        alert(getCookie(userName))
     });
 
     //判断题
