@@ -149,9 +149,7 @@
 <script type="text/javascript">
 
     var userName = $("#userName").val();
-
     $(document).ready(function () {
-
         var cookie = getCookie(userName);
         var dt = $("dt");
         if (cookie == null || cookie == '') {
@@ -162,20 +160,21 @@
             }
             setCookie(userName, JSON.stringify(dts));
         } else {
+            alert(cookie)
             var json_class = JSON.parse(cookie);
-            alert(JSON.stringify(json_class))
             //将答案写上html标签上
             for (var t in json_class) {
-
                 var dt = $("#" + t);
                 var dd = $("#" + t).parent("dl").find("dd");
-
                 for (var i=0; i<dd.length; i++) {
                     if (dt.attr('class') == '1') {
                         //获取一个HTMLElement对象,不能直接用便签语法,因为这里已经变成了对象
                         if (dd[i].title == json_class[t]) {
                             $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance");
                         }
+
+                        var indexnum = dt.parent("dl").index();
+                        $(".swiper-pagination span").eq(indexnum).addClass("curr");
                     } else if (dt.attr('class') == '2') {
                         /*将乱序答案排序*/
                         var keys = json_class[t].split('');
@@ -193,48 +192,37 @@
                         for (var x=0; x<keys.length; x++) {
                             if (dd[i].title == keys[x]) {
                                 $('#'+t).siblings("[title='"+keys[x]+"']").addClass("chance");
+                                var indexnum = dt.parent("dl").index();
+                                $(".swiper-pagination span").eq(indexnum).addClass("curr");
                             }
                         }
                     }
                 }
 
-                /*if (dt.attr('class') == '1') {
-                    for (i=0; i<dd.length; i++) {
+                if (dd.length == 0 && dt.attr('class') == '3') {
+                    $('#'+t).siblings("[name='"+t+"']").attr("value", json_class[t]);
+                    var indexnum = dt.parent("dl").index();
+                    $(".swiper-pagination span").eq(indexnum).addClass("curr");
+                } else if (dd.length == 0 && dt.attr('class') == '3') {
 
-                        //获取一个HTMLElement对象,不能直接用便签语法,因为这里已经变成了对象
-                        if (dd[i].title == json_class[t]) {
-                            alert('test')
-                            $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance")
-                        }
-                    }
-                } else if (dt.attr('class') == '2') {
-                    for (i=0; i<dd.length; i++) {
-
-                    }
-                }*/
+                }
             }
         }
     });
 
     //题目轮播
     var swiper = new Swiper('.swiper-container', {
-
         pagination: '.swiper-pagination',
-
         prevButton:'.swiper-button-prev',
         nextButton:'.swiper-button-next',
-
         paginationClickable: true,
-
         paginationBulletRender: function (index, className) {
             $("#totnum").text(index+1);//总页码
             return '<span class="' + className + '">' + (index + 1) + '</span>';
         },
-
         onSlideChangeEnd: function(swiper){
             $("#curnum").text(swiper.activeIndex+1);//当前页
         }
-
     });
 
     //点击底部出现题目数
@@ -270,7 +258,6 @@
             }
         } else if (dl_class == 2 || dl_class == '2') {
             if ($(this).hasClass('chance')) {
-
                 //过滤修改
                 for (var t in cookie) {
                     if (t == id) {
@@ -294,18 +281,14 @@
 
         delCookie(userName);
         setCookie(userName, JSON.stringify(cookie));
-        alert(getCookie(userName))
     });
 
     //判断题
     $("dl.swiper-slide input:radio").click(function () {
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
-
         var cookie = JSON.parse(getCookie(userName));
-
         var id = $(this).parent("dl").find("dt").attr("id");
-
         var key = $(this).attr("value");
 
         //过滤修改
@@ -314,29 +297,29 @@
                 cookie[t] = key;
             }
         }
-
         delCookie(userName);
         setCookie(userName, JSON.stringify(cookie));
     });
 
+    //填空题
     $("dl.swiper-slide input:text").click(function () {
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
     });
 
-
-
     //交卷
     $("#numok").click(function(){
 
         var c = $('.swiper-wrapper').find(':text');
-
         var cookie = JSON.parse(getCookie(userName));
         for (var i=0; i < c.length; i++) {
             var k = c.eq(i).attr('name');
             var v = c.eq(i).val();
             cookie[k] = v;
         }
+
+        /*保存答案*/
+        setCookie(userName, JSON.stringify(cookie))
 
         $(".swiper-pagination").hide();
         var allnum = $("#totnum").text();
@@ -411,10 +394,8 @@
 
         if (hour == 0 && minute == 0 && seconds == 0) {
             alert("考试时间到！即将收卷！");
-
             //关闭时间循环
             clearInterval(interval);
-
             //提交答案请求
             alert("提交试卷");
 
