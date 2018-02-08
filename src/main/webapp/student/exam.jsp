@@ -170,15 +170,32 @@
                 var dt = $("#" + t);
                 var dd = $("#" + t).parent("dl").find("dd");
 
-                for (i=0; i<dd.length; i++) {
+                for (var i=0; i<dd.length; i++) {
                     if (dt.attr('class') == '1') {
                         //获取一个HTMLElement对象,不能直接用便签语法,因为这里已经变成了对象
                         if (dd[i].title == json_class[t]) {
-                            $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance")
+                            $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance");
                         }
-                    } /*else if (dt.attr('class') == '2') {
+                    } else if (dt.attr('class') == '2') {
+                        /*将乱序答案排序*/
+                        var keys = json_class[t].split('');
+                        for (var y=0; y<keys.length; y++) {
+                            for (var j=y+1; j<keys.length; j++) {
+                                if (keys[y] > keys[j]) {
+                                    var temp = keys[y];
+                                    keys[y] = keys[j];
+                                    keys[j] = temp;
+                                }
+                            }
+                        }
 
-                    }*/
+                        /*选择答案*/
+                        for (var x=0; x<keys.length; x++) {
+                            if (dd[i].title == keys[x]) {
+                                $('#'+t).siblings("[title='"+keys[x]+"']").addClass("chance");
+                            }
+                        }
+                    }
                 }
 
                 /*if (dt.attr('class') == '1') {
