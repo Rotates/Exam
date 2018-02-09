@@ -28,6 +28,7 @@ public class MyRealm extends AuthorizingRealm {
 
         //获取登录时输入的用户名
         String userName=(String) principalCollection.fromRealm(getName()).iterator().next();
+        System.out.println(userName);
         AccountEntity account = accountService.findByUserName(userName);
 
         if (account != null) {

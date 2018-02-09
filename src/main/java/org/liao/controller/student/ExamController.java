@@ -57,6 +57,7 @@ public class ExamController {
         String sessionUserName = (String) session.getAttribute("user");
         AccountEntity a = accountService.findByUserName(sessionUserName);
 
+        /*读取记录*/
         if (e.getIsStart() == 1) {
             List<ExamQuestionEntity> singleSelect = new ArrayList<>();
             List<ExamQuestionEntity> multipleSelect = new ArrayList<>();
@@ -77,7 +78,6 @@ public class ExamController {
                     judg.add(list.get(i));
                 }
             }
-
 
             //随机打乱试题顺序
             Collections.shuffle(singleSelect);
@@ -113,7 +113,6 @@ public class ExamController {
 
                 String t = (String)session.getAttribute("endTime");
                 if (t == null || t.equals("")) {
-
                     Timestamp timestamp = a.getEndTime();
                     session.setAttribute("endTime", sdf.format(timestamp));
                     modelAndView.addObject("endTime", sdf.format(timestamp));
@@ -122,7 +121,7 @@ public class ExamController {
             } else {
 
                 Timestamp d = new Timestamp(System.currentTimeMillis() + e.getTime()*60*1000);
-                accountService.updateStartTime(d, sessionUserName);
+                accountService.updateEndTime(d, sessionUserName);
                 session.setAttribute("endTime", sdf.format(d));
                 modelAndView.addObject("endTime", sdf.format(d));
             }
@@ -137,7 +136,6 @@ public class ExamController {
             //转到404页面
             modelAndView.setViewName("student/404");
         }
-
         return modelAndView;
     }
 
@@ -145,10 +143,11 @@ public class ExamController {
     public String submit(String keys, HttpServletResponse response) throws Exception {
 
         //改卷代码
-
+        Session session = SecurityUtils.getSubject().getSession();
+        String sessionUserName = (String) session.getAttribute("user");
         JSONObject object = new JSONObject();
         object.put("success", true);
-
+        accountService.updateEndTime(null, sessionUserName);
         ResponseUtil.write(response, object);
         return "student/finished";
     }

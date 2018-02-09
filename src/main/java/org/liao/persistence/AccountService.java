@@ -43,7 +43,7 @@ public class AccountService extends BaseService {
         }
     }
 
-    public void updateStartTime(Timestamp t, String userName) {
+    public void updateEndTime(Timestamp t, String userName) {
 
         String sql = "update AccountEntity a set a.endTime=? where userName=?";
         getCurrentSession().createQuery(sql)

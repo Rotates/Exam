@@ -324,7 +324,6 @@
 
         /*保存答案*/
         setCookie(userName, JSON.stringify(cookie))
-
         $(".swiper-pagination").hide();
         var allnum = $("#totnum").text();
         $("#subnum").text(allnum);
@@ -354,9 +353,10 @@
                             alert("error");
                         },
                         success: function (t) {
+                            /*交卷成功后,删除cookie记录*/
+                            delCookie(userName);
                             layer.close(submit_log);
                             window.location.href='${pageContext.request.contextPath}/student/exam/finished';
-                            /*layer.msg('交卷成功!')*/
                         }
                     });
                 }
