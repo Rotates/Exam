@@ -329,15 +329,7 @@
 
     //交卷
     $("#numok").click(function(){
-
-        var c = $('.swiper-wrapper').find(':text');
         var cookie = JSON.parse(getCookie(userName));
-/*        for (var i=0; i < c.length; i++) {
-            var k = c.eq(i).attr('name');
-            var v = c.eq(i).val();
-            cookie[k] = v;
-        }*/
-
         /*保存答案*/
         setCookie(userName, JSON.stringify(cookie))
         $(".swiper-pagination").hide();
@@ -416,22 +408,26 @@
             alert("考试时间到！即将收卷！");
             //关闭时间循环
             clearInterval(interval);
-            //提交答案请求
-            alert("提交试卷");
 
+            var submit_log = layer.open({
+                type: 2
+                ,content: '提交中'
+            });
+
+            //ajax提交答案
             $.ajax({
-                url: '${pageContext.request.contextPath}/submit/exam',
+                url: '${pageContext.request.contextPath}/student/submit/exam',
                 type: 'post',
-                data: {},
+                data: {keys:getCookie(userName)},
                 dataType: 'json',
-                beforeSend: function () {
-                    alert("before");
-                },
                 error: function () {
                     alert("error");
                 },
                 success: function (t) {
-
+                    /*交卷成功后,删除cookie记录*/
+                    delCookie(userName);
+                    layer.close(submit_log);
+                    window.location.href='${pageContext.request.contextPath}/student/exam/finished';
                 }
             });
         }

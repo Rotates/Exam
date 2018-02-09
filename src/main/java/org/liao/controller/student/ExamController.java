@@ -110,24 +110,22 @@ public class ExamController {
             DateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
             if (a.getEndTime() != null) {
+                Timestamp end = a.getEndTime();
+                Timestamp now = new Timestamp(System.currentTimeMillis());
 
-                String t = (String)session.getAttribute("endTime");
-                if (t == null || t.equals("")) {
-                    Timestamp timestamp = a.getEndTime();
-                    session.setAttribute("endTime", sdf.format(timestamp));
-                    modelAndView.addObject("endTime", sdf.format(timestamp));
+                if (now.after(end) || now.equals(end)) {
+                    modelAndView.setViewName("student/finished");
+                } else {
+                    modelAndView.addObject("endTime", sdf.format(end));
+                    modelAndView.setViewName("student/exam");
                 }
-                modelAndView.addObject("endTime", t);
-            } else {
 
+            } else {
                 Timestamp d = new Timestamp(System.currentTimeMillis() + e.getTime()*60*1000);
                 accountService.updateEndTime(d, sessionUserName);
-                session.setAttribute("endTime", sdf.format(d));
                 modelAndView.addObject("endTime", sdf.format(d));
+                modelAndView.setViewName("student/exam");
             }
-
-            modelAndView.setViewName("student/exam");
-
         } else if (e.getIsStart() == 0) {
             //转到404页面
             modelAndView.setViewName("student/404");
@@ -142,12 +140,16 @@ public class ExamController {
     @RequestMapping("/submit/exam")
     public String submit(String keys, HttpServletResponse response) throws Exception {
 
-        //改卷代码
         Session session = SecurityUtils.getSubject().getSession();
         String sessionUserName = (String) session.getAttribute("user");
+        AccountEntity a = accountService.findByUserName(sessionUserName);
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        accountService.updateEndTime(d, sessionUserName);
+        //改卷代码
+
+
         JSONObject object = new JSONObject();
         object.put("success", true);
-        accountService.updateEndTime(null, sessionUserName);
         ResponseUtil.write(response, object);
         return "student/finished";
     }
