@@ -34,9 +34,7 @@ public class MyRealm extends AuthorizingRealm {
         if (account != null) {
             //权限信息对象info,用来存放查出的用户的所有的角色
             SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();
-
             String role = accountService.getUserRole(account.getUserName());
-
             Set<String> set = new HashSet<>();
             set.add(role);
             //用户的角色集合

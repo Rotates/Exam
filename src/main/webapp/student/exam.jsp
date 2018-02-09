@@ -147,7 +147,6 @@
 <script src="${pageContext.request.contextPath}/static/js/swiper.min.js"></script>
 <script src="${pageContext.request.contextPath}/static/js/layer-mobile/layer.js"></script>
 <script type="text/javascript">
-
     var userName = $("#userName").val();
     $(document).ready(function () {
         var cookie = getCookie(userName);
@@ -162,7 +161,6 @@
         } else {
             /*将答案写上html标签上*/
             var json_class = JSON.parse(cookie);
-
             /*单项选择题与多项选择题*/
             for (var t in json_class) {
                 var dt = $("#" + t);
@@ -173,7 +171,6 @@
                         if (dd[i].title == json_class[t]) {
                             $('#'+t).siblings("[title='"+json_class[t]+"']").addClass("chance");
                         }
-
                         var indexnum = dt.parent("dl").index();
                         $(".swiper-pagination span").eq(indexnum).addClass("curr");
                     } else if (dt.attr('class') == '2') {
@@ -203,12 +200,18 @@
                 /*填空题与判断题*/
                 if (dd.length == 0 && dt.attr('class') == '3') {
                     $('#'+t).siblings("[name='"+t+"']").attr("value", json_class[t]);
-                    var indexnum = dt.parent("dl").index();
-                    $(".swiper-pagination span").eq(indexnum).addClass("curr");
+                    /*如果cookie中的备份答案为空则不重写*/
+                    if (json_class[t] != '') {
+                        var indexnum = dt.parent("dl").index();
+                        $(".swiper-pagination span").eq(indexnum).addClass("curr");
+                    }
                 } else if (dd.length == 0 && dt.attr('class') == '4') {
                     $('#'+t).siblings("[value='"+json_class[t]+"']").attr('checked', true);
-                    var indexnum1 = dt.parent("dl").index();
-                    $(".swiper-pagination span").eq(indexnum1).addClass("curr");
+                    /*如果cookie中的备份答案为空则不重写*/
+                    if (json_class[t] != '') {
+                        var indexnum1 = dt.parent("dl").index();
+                        $(".swiper-pagination span").eq(indexnum1).addClass("curr");
+                    }
                 }
             }
         }
@@ -309,6 +312,19 @@
     $("dl.swiper-slide input:text").click(function () {
         var indexnum = $(this).parent("dl").index();
         $(".swiper-pagination span").eq(indexnum).addClass("curr");
+        var cookie = JSON.parse(getCookie(userName));
+
+        /*失去焦点后,备份填空题*/
+        $(this).blur(function () {
+            var k = $(this).attr('name');
+            var v = $(this).val();
+            for (var temp in cookie) {
+                if (temp == k) {
+                    cookie[temp] = v;
+                }
+            }
+            setCookie(userName, JSON.stringify(cookie));
+        })
     });
 
     //交卷
@@ -316,11 +332,11 @@
 
         var c = $('.swiper-wrapper').find(':text');
         var cookie = JSON.parse(getCookie(userName));
-        for (var i=0; i < c.length; i++) {
+/*        for (var i=0; i < c.length; i++) {
             var k = c.eq(i).attr('name');
             var v = c.eq(i).val();
             cookie[k] = v;
-        }
+        }*/
 
         /*保存答案*/
         setCookie(userName, JSON.stringify(cookie))
