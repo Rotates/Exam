@@ -19,3 +19,4 @@
 <script src="${pageContext.request.contextPath}/static/manage/js/layer.js"></script>
 <script src="${pageContext.request.contextPath}/static/manage/js/app.js"></script>
 <script src="${pageContext.request.contextPath}/static/manage/js/jeesns.js"></script>
+<script src="${pageContext.request.contextPath}/static/ckeditor/ckeditor.js"></script>

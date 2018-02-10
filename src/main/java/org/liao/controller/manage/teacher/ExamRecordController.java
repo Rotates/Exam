@@ -7,6 +7,7 @@ import org.liao.util.QRCodeUtils;
 import org.liao.util.ResponseModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +52,7 @@ public class ExamRecordController {
         return response;
     }
 
+    /*发布考试*/
     @RequestMapping("release/{id}")
     @ResponseBody
     public Object release(@PathVariable("id") Integer id, HttpServletRequest request)
@@ -64,11 +66,18 @@ public class ExamRecordController {
         return response;
     }
 
+    /*取消发布考试*/
     @RequestMapping("cancel/{id}")
     @ResponseBody
     public Object cancel(@PathVariable("id") Integer id) {
-
         ResponseModel response = examRecordService.cancel(new ExamRecordEntity(id));
         return response;
     }
+
+    /*终止考试*/
+/*    @RequestMapping("stop/{id}")
+    @ResponseBody
+    public Object stop(@PathVariable("id") Integer id) {
+
+    }*/
 }

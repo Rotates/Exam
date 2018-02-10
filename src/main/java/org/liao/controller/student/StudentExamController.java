@@ -32,7 +32,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/student")
-public class ExamController {
+public class StudentExamController {
 
     @Resource
     private ExamRecordService examRecordService;
@@ -62,7 +62,7 @@ public class ExamController {
             List<ExamQuestionEntity> singleSelect = new ArrayList<>();
             List<ExamQuestionEntity> multipleSelect = new ArrayList<>();
             List<ExamQuestionEntity> fill = new ArrayList<>();
-            List<ExamQuestionEntity> judg = new ArrayList<>();
+            List<ExamQuestionEntity> judge = new ArrayList<>();
 
             List<ExamQuestionEntity> list = questionService.findByRecordId(id);
 
@@ -75,7 +75,7 @@ public class ExamController {
                 } else if (list.get(i).getType_id() == 3) {
                     fill.add(list.get(i));
                 } else if (list.get(i).getType_id() == 4) {
-                    judg.add(list.get(i));
+                    judge.add(list.get(i));
                 }
             }
 
@@ -83,7 +83,7 @@ public class ExamController {
             Collections.shuffle(singleSelect);
             Collections.shuffle(multipleSelect);
             Collections.shuffle(fill);
-            Collections.shuffle(judg);
+            Collections.shuffle(judge);
 
             list.clear();
 
@@ -99,8 +99,8 @@ public class ExamController {
                 list.add(fill.get(i));
             }
 
-            for (int i = 0; i < judg.size(); i++) {
-                list.add(judg.get(i));
+            for (int i = 0; i < judge.size(); i++) {
+                list.add(judge.get(i));
             }
 
             modelAndView.addObject("questions", list);
@@ -139,14 +139,11 @@ public class ExamController {
 
     @RequestMapping("/submit/exam")
     public String submit(String keys, HttpServletResponse response) throws Exception {
-
         Session session = SecurityUtils.getSubject().getSession();
         String sessionUserName = (String) session.getAttribute("user");
-        AccountEntity a = accountService.findByUserName(sessionUserName);
         Timestamp d = new Timestamp(System.currentTimeMillis());
         accountService.updateEndTime(d, sessionUserName);
         //改卷代码
-
 
         JSONObject object = new JSONObject();
         object.put("success", true);

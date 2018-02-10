@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * ExamRecord的处理
+ */
 @Repository
 public class ExamRecordService extends BaseService {
 
@@ -20,6 +23,7 @@ public class ExamRecordService extends BaseService {
         return (Long) getCurrentSession().createQuery(sql).uniqueResult();
     }
 
+    /*通过id找到记录*/
     public ExamRecordEntity findById(Integer id) {
         String sql = "from ExamRecordEntity where id=?";
 
@@ -29,6 +33,7 @@ public class ExamRecordService extends BaseService {
         return e;
     }
 
+    /*删除考试记录*/
     public ResponseModel delete(ExamRecordEntity e) {
 
         ExamRecordEntity record = this.findById(e.getId());
@@ -44,6 +49,7 @@ public class ExamRecordService extends BaseService {
         }
     }
 
+    /*发布考试*/
     public ResponseModel release(ExamRecordEntity e) {
 
         ExamRecordEntity record = this.findById(e.getId());
@@ -64,6 +70,7 @@ public class ExamRecordService extends BaseService {
         }
     }
 
+    /*撤销发布考试*/
     public ResponseModel cancel(ExamRecordEntity e) {
 
         ExamRecordEntity record = this.findById(e.getId());
@@ -83,11 +90,14 @@ public class ExamRecordService extends BaseService {
         }
     }
 
+    /*终止考试*/
+/*    public ResponseModel stop(ExamRecordEntity e) {
 
+    }*/
 
+    /*获取考试记录的状态*/
     public Integer state(ExamRecordEntity e) {
         ExamRecordEntity record = this.findById(e.getId());
-
         return record.getIsStart();
     }
 }

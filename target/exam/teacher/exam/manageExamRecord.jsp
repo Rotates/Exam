@@ -30,7 +30,6 @@
                                     总数:${sum}
                                 </a>
                             </h3>
-
                             <div class="box-tools">
                                 <form method="get" action="/cms/index">
                                     <div class="input-group input-group-sm" style="width: 350px;">
@@ -81,14 +80,18 @@
                                                        href="${pageContext.request.contextPath}/static/qrcode/${record.qrcodeUrl}.png">
                                                         <span class="label label-primary">二维码</span>
                                                     </a>
+                                                    <a class="marg-l-5" target="_jeesnsLink"
+                                                       href="${pageContext.request.contextPath}/teacher/exam/examRecord/stop/${record.id}">
+                                                        <span class="label label-warning">终止</span>
+                                                    </a>
                                                 </c:when>
                                             </c:choose>
 
                                         </td>
                                         <td>
-                                            <a href="{managePath}/cms/article/edit/rticle.id}" target="_jeesnsOpen"
-                                               title="编辑文章" width="1000px" height="680px">
-                                                <span class="label label-warning"><i class="fa fa-edit green"></i></span>
+                                            <a href="${pageContext.request.contextPath}/teacher/exam/edit/${record.id}" target="_jeesnsOpen"
+                                               title="试卷详情" width="1000px" height="680px">
+                                                <span class="label label-info"><i class="fa fa-edit green"></i></span>
                                             </a>
                                             <a class="marg-l-5" target="_jeesnsLink"
                                                href="${pageContext.request.contextPath}/teacher/exam/examRecord/delete/${record.id}" confirm="确定要删除此考试记录吗？">
