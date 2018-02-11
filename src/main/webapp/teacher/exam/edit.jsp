@@ -115,7 +115,7 @@
                             </div>
                         </c:if>
                         <input name="score" value="${s.score}" type="hidden">
-                        <select name="${s.id}" onchange="getScore(this)">
+                        <select name="${s.score}" onchange="getScore(this)">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -250,7 +250,7 @@
                         </div>
 
                         <div class="form-group assignment">
-                            <button type="button" class="btn btn-primary" onclick="updateQuestion()">更新</button>
+                            <button type="button" class="btn btn-primary" onclick="updateQuestion(${s.id})">更新</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -287,7 +287,7 @@
                         </div>
 
                         <div class="form-group assignment">
-                            <button type="button" class="btn btn-primary" onclick="updateQuestion()">更新</button>
+                            <button type="button" class="btn btn-primary" onclick="updateQuestion(${s.id})">更新</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -334,7 +334,7 @@
                             </div>
                         </div>
                         <div class="form-group assignment">
-                            <button type="button" class="btn btn-primary" onclick="updateQuestion()">更新</button>
+                            <button type="button" class="btn btn-primary" onclick="updateQuestion(${s.id})">更新</button>
                         </div>
                     </div>
                 </c:forEach>
@@ -434,15 +434,13 @@
     /*更新题目内容*/
     function updateQuestion(id) {
         var type = $("#"+id).parent('div').parent('div').parent('div').attr('data-type');
-
-        var trueKey = $("#"+id).parent('div').parent('div').find('p.true_key').text();
-        var title = $("#"+id).parent('div').parent('div').parent('div').find('h4').find('input').attr('value');
+        var title = $("#"+id).parent('div').parent('div').parent('div').find('h4').find('input').val();/*attr('value')*/;
         var resolution = CKEDITOR.instances[id].getData();
-        var score = $("#"+id).parent('div').parent('div').parent('div').find('select').attr('name');
-
-
+        var score = $("#"+id).parent('div').parent('div').parent('div').find('select').val();
+        var trueKey = $("#"+id).parent('div').parent('div').find('p.true_key').text();
         /*当为选择题更新*/
         if (type == 1 || type == 2) {
+
 
             /*获取选项内容*/
             var options = $("#"+id).parent('div').parent('div').parent('div').find('input.choicetxt');
@@ -451,11 +449,12 @@
                 keys_json[i+1] = options[i].value;
             }
 
+            alert(JSON.stringify(keys_json)+title+resolution+score+trueKey)
             $.ajax({
                 url:'${pageContext.request.contextPath}/teacher/exam/optionQuestion/update/'+id,
                 type:'post',
                 dataType:'json',
-                data:{trueKey:trueKey, resolution:resolution, title:title, keys_json:keys_json, score:score},
+                data:{trueKey:trueKey, resolution:resolution, title:title, keys_json:JSON.stringify(keys_json), score:score},
                 error: function () {
                     alert('error')
                 },
@@ -463,7 +462,22 @@
                     alert('success')
                 }
             });
-        } else if (type == 3 || type == 4) {
+        } else if (type == 3) {
+            trueKey = $("#fill_text").val();
+            $.ajax({
+                url:'${pageContext.request.contextPath}/teacher/exam/noOptionQuestion/update/'+id,
+                type:'post',
+                dataType:'json',
+                data:{trueKey:trueKey, resolution:resolution, title:title, score:score},
+                error: function () {
+                    alert('error')
+                },
+                success: function () {
+                    alert('success')
+                }
+            })
+        } else if (type == 4) {
+
             $.ajax({
                 url:'${pageContext.request.contextPath}/teacher/exam/noOptionQuestion/update/'+id,
                 type:'post',
