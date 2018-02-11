@@ -114,6 +114,19 @@
                                 </label>
                             </div>
                         </c:if>
+                        <input name="score" value="${s.score}" type="hidden">
+                        <select name="${s.id}" onchange="getScore(this)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                             <div class="topic-answer">
                                 正确答案:<p class="true_key" title="${s.id}">${s.trueKey}</p>
                                 <p>解析:</p>
@@ -212,6 +225,20 @@
                             </div>
                         </c:if>
 
+                        <input name="score" value="${s.score}" type="hidden">
+                        <select name="${s.id}" onchange="getScore(this)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+
                         <div class="topic-answer">
                             正确答案:<p class="true_key" title="${s.id}">${s.trueKey}</p>
                             <p>解析:</p>
@@ -236,8 +263,21 @@
                 <c:forEach var="s" items="${fill}" varStatus="status">
                     <div class="testCon" data-type="3">
                         <h4 class="jxz-title">${status.index + 1}.<input class="title" value="${s.title}" type="text"></h4>
+                        <input name="score" value="${s.score}" type="hidden">
+                        <select name="${s.id}" onchange="getScore(this)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                         <div class="topic-answer">
-                            正确答案:<p class="true_key" title="${s.id}"><input class="choicetxt" value="${s.trueKey}" type="text"></p>
+                            正确答案:<p class="true_key" title="${s.id}"><input id="fill_text" value="${s.trueKey}" type="text"></p>
                             <p>解析:</p>
                             <div class="jxz-option">
                                 <textarea id="${s.id}" rows="5" cols="80">
@@ -270,6 +310,20 @@
                                 <input name="judge" title="0" type="radio" value="0"> 错误
                             </label>
                         </div>
+
+                        <input name="score" value="${s.score}" type="hidden">
+                        <select name="${s.id}" onchange="getScore(this)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                         <div class="topic-answer">
                             正确答案:<p class="true_key" title="${s.id}">${s.trueKey}</p>
                             <p>解析:</p>
@@ -294,29 +348,40 @@
         var true_keys = $('p.true_key');
 
         for (var i=0; i<true_keys.length; i++) {
-            var key = true_keys[i].innerHTML;
-
             var num = true_keys[i].title;
             var type = $("[title='"+num+"']").parent('div').parent('div').attr('data-type');
 
             /*单选*/
             if (type == 1) {
+                var key = true_keys[i].innerHTML;
                 $("[title='"+num+"']").parent('div').parent('div').find("[title='"+key+"']").attr('checked', true);
             } else if (type == 2) {
+                var key = true_keys[i].innerHTML;
                 var keys = key.split('');
 
                 for (var i=0; i<keys.length; i++) {
                     $("[title='"+num+"']").parent('div').parent('div').find("[title='"+keys[i]+"']").attr('checked', true);
                 }
             } else if (type == 4) {
+                var key = true_keys[i].innerHTML;
 
                 if (key == 1) {
                     $("[name='judge']").first().attr('checked', true);
                 } else {
                     $("[name='judge']").last().attr('checked', true);
                 }
+            } else if (type == 3) {
+                alert(type)
             }
+            /*单选,多选,判断select初始化*/
+            var score = $("[title='"+num+"']").parent('div').parent('div').find("input[name='score']").attr('value');
+            $("[title='"+num+"']").parent('div').parent('div').find('select').val(score);
+
         }
+
+        /*填空题select初始化*/
+        var score = $("#fill_text").parent('p').parent('div').parent('div').find("input[name='score']").attr('value');
+        $("#fill_text").parent('p').parent('div').parent('div').find('select').val(score);
 
     });
 
@@ -370,17 +435,40 @@
     function updateQuestion(id) {
         var type = $("#"+id).parent('div').parent('div').parent('div').attr('data-type');
 
+        var trueKey = $("#"+id).parent('div').parent('div').find('p.true_key').text();
+        var title = $("#"+id).parent('div').parent('div').parent('div').find('h4').find('input').attr('value');
+        var resolution = CKEDITOR.instances[id].getData();
+        var score = $("#"+id).parent('div').parent('div').parent('div').find('select').attr('name');
+
+
         /*当为选择题更新*/
         if (type == 1 || type == 2) {
-            var trueKey = $("#"+id).parent('div').parent('div').find('p.true_key').text();
-            var title = $("#"+id).parent('div').parent('div').parent('div').find('h4').find('input').attr('value');
-            var resolution = CKEDITOR.instances[id].getData();
+
+            /*获取选项内容*/
+            var options = $("#"+id).parent('div').parent('div').parent('div').find('input.choicetxt');
+            var keys_json = {};
+            for (var i=0; i<options.length; i++) {
+                keys_json[i+1] = options[i].value;
+            }
 
             $.ajax({
-                url:'${pageContext.request.contextPath}/teacher/exam/selection/update/'+id,
+                url:'${pageContext.request.contextPath}/teacher/exam/optionQuestion/update/'+id,
                 type:'post',
                 dataType:'json',
-                data:{trueKey:trueKey, resolution:resolution, title:title},
+                data:{trueKey:trueKey, resolution:resolution, title:title, keys_json:keys_json, score:score},
+                error: function () {
+                    alert('error')
+                },
+                success: function () {
+                    alert('success')
+                }
+            });
+        } else if (type == 3 || type == 4) {
+            $.ajax({
+                url:'${pageContext.request.contextPath}/teacher/exam/noOptionQuestion/update/'+id,
+                type:'post',
+                dataType:'json',
+                data:{trueKey:trueKey, resolution:resolution, title:title, score:score},
                 error: function () {
                     alert('error')
                 },
@@ -389,6 +477,11 @@
                 }
             })
         }
+    }
+
+    /*设置select的值*/
+    function getScore(v) {
+        $("select[name='"+v.name+"']").attr('name', v.value)
     }
 </script>
 </body>
