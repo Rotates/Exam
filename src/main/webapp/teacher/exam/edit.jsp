@@ -115,7 +115,7 @@
                             </div>
                         </c:if>
                         <input name="score" value="${s.score}" type="hidden">
-                        <select name="${s.score}" onchange="getScore(this)">
+                        分数:<select name="score">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -126,6 +126,12 @@
                             <option value="8">8</option>
                             <option value="9">9</option>
                             <option value="10">10</option>
+                        </select><br>
+                        <input name="difficulty" value="${s.exam_difficulty_id}" type="hidden">
+                        难度:<select name="difficulty">
+                            <c:forEach var="difficulty" items="${difficulty}">
+                                <option value="${difficulty.id}">${difficulty.difficulty}</option>
+                            </c:forEach>
                         </select>
                             <div class="topic-answer">
                                 正确答案:<p class="true_key" title="${s.id}">${s.trueKey}</p>
@@ -226,18 +232,24 @@
                         </c:if>
 
                         <input name="score" value="${s.score}" type="hidden">
-                        <select name="${s.id}" onchange="getScore(this)">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
+                        分数:<select name="score">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select><br>
+                        <input name="difficulty" value="${s.exam_difficulty_id}" type="hidden">
+                        难度:<select name="difficulty">
+                        <c:forEach var="difficulty" items="${difficulty}">
+                            <option value="${difficulty.id}">${difficulty.difficulty}</option>
+                        </c:forEach>
+                    </select>
 
                         <div class="topic-answer">
                             正确答案:<p class="true_key" title="${s.id}">${s.trueKey}</p>
@@ -264,18 +276,25 @@
                     <div class="testCon" data-type="3">
                         <h4 class="jxz-title">${status.index + 1}.<input class="title" value="${s.title}" type="text"></h4>
                         <input name="score" value="${s.score}" type="hidden">
-                        <select name="${s.id}" onchange="getScore(this)">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
+                        分数:<select name="score">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select><br>
+                        <input name="difficulty" value="${s.exam_difficulty_id}" type="hidden">
+                        难度:<select name="difficulty">
+                        <c:forEach var="difficulty" items="${difficulty}">
+                            <option value="${difficulty.id}">${difficulty.difficulty}</option>
+                        </c:forEach>
+                    </select>
+
                         <div class="topic-answer">
                             正确答案:<p class="true_key" title="${s.id}"><input id="fill_text" value="${s.trueKey}" type="text"></p>
                             <p>解析:</p>
@@ -312,18 +331,24 @@
                         </div>
 
                         <input name="score" value="${s.score}" type="hidden">
-                        <select name="${s.id}" onchange="getScore(this)">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
-                        </select>
+                        分数:<select name="score">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select><br>
+                        <input name="difficulty" value="${s.exam_difficulty_id}" type="hidden">
+                        难度:<select name="difficulty">
+                        <c:forEach var="difficulty" items="${difficulty}">
+                            <option value="${difficulty.id}">${difficulty.difficulty}</option>
+                        </c:forEach>
+                    </select>
                         <div class="topic-answer">
                             正确答案:<p class="true_key" title="${s.id}">${s.trueKey}</p>
                             <p>解析:</p>
@@ -375,7 +400,10 @@
             }
             /*单选,多选,判断select初始化*/
             var score = $("[title='"+num+"']").parent('div').parent('div').find("input[name='score']").attr('value');
-            $("[title='"+num+"']").parent('div').parent('div').find('select').val(score);
+            $("[title='"+num+"']").parent('div').parent('div').find("select[name='score']").val(score);
+
+            var difficulty = $("[title='"+num+"']").parent('div').parent('div').find("input[name='difficulty']").attr('value');
+            $("[title='"+num+"']").parent('div').parent('div').find("select[name='difficulty']").val(difficulty);
 
         }
 
@@ -436,7 +464,8 @@
         var type = $("#"+id).parent('div').parent('div').parent('div').attr('data-type');
         var title = $("#"+id).parent('div').parent('div').parent('div').find('h4').find('input').val();/*attr('value')*/;
         var resolution = CKEDITOR.instances[id].getData();
-        var score = $("#"+id).parent('div').parent('div').parent('div').find('select').val();
+        var score = $("#"+id).parent('div').parent('div').parent('div').find("select[name='score']").val();
+        var difficulty = $("#"+id).parent('div').parent('div').parent('div').find("select[name='difficulty']").val();
         var trueKey = $("#"+id).parent('div').parent('div').find('p.true_key').text();
         /*当为选择题更新*/
         if (type == 1 || type == 2) {
@@ -449,12 +478,11 @@
                 keys_json[i+1] = options[i].value;
             }
 
-            alert(JSON.stringify(keys_json)+title+resolution+score+trueKey)
             $.ajax({
                 url:'${pageContext.request.contextPath}/teacher/exam/optionQuestion/update/'+id,
                 type:'post',
                 dataType:'json',
-                data:{trueKey:trueKey, resolution:resolution, title:title, keys_json:JSON.stringify(keys_json), score:score},
+                data:{exam_difficulty_id:difficulty, type_id:type, id:id, trueKey:trueKey, resolution:resolution, title:title, keys_json:JSON.stringify(keys_json), score:score},
                 error: function () {
                     alert('error')
                 },
@@ -468,7 +496,7 @@
                 url:'${pageContext.request.contextPath}/teacher/exam/noOptionQuestion/update/'+id,
                 type:'post',
                 dataType:'json',
-                data:{trueKey:trueKey, resolution:resolution, title:title, score:score},
+                data:{trueKey:trueKey, resolution:resolution, title:title, score:score, exam_difficulty_id:difficulty},
                 error: function () {
                     alert('error')
                 },
@@ -477,12 +505,11 @@
                 }
             })
         } else if (type == 4) {
-
             $.ajax({
                 url:'${pageContext.request.contextPath}/teacher/exam/noOptionQuestion/update/'+id,
                 type:'post',
                 dataType:'json',
-                data:{trueKey:trueKey, resolution:resolution, title:title, score:score},
+                data:{trueKey:trueKey, resolution:resolution, title:title, score:score, exam_difficulty_id:difficulty },
                 error: function () {
                     alert('error')
                 },
@@ -494,9 +521,9 @@
     }
 
     /*设置select的值*/
-    function getScore(v) {
+/*    function getScore(v) {
         $("select[name='"+v.name+"']").attr('name', v.value)
-    }
+    }*/
 </script>
 </body>
 </html>

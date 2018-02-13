@@ -17,4 +17,14 @@ public class QuestionService extends BaseService {
         String sql = "from ExamQuestionEntity where exam_record_id=?";
         return getCurrentSession().createQuery(sql).setInteger(0, id).list();
     }
+
+    public ExamQuestionEntity findById(Integer id) {
+        String sql = "from ExamQuestionEntity where id=?";
+        return (ExamQuestionEntity) getCurrentSession().createQuery(sql).setInteger(0, id).list().get(0);
+    }
+
+    public void update(ExamQuestionEntity e) {
+        getCurrentSession().update(e);
+        getCurrentSession().flush();
+    }
 }

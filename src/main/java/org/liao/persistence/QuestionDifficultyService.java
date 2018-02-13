@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public class QuestionDifficultyService extends BaseService{
-    public ExamQuestionDifficulty findByDifficultyName(String name) {
+    public ExamQuestionDifficulty findByDifficultyByName(String name) {
         String sql = "from ExamQuestionDifficulty where difficulty=?";
         List<ExamQuestionDifficulty> list = getCurrentSession().createQuery(sql).setString(0,name).list();
 
@@ -22,5 +22,15 @@ public class QuestionDifficultyService extends BaseService{
             //未找到相应的类型
             return null;
         }
+    }
+
+    public ExamQuestionDifficulty findById(Integer id) {
+        String sql = "from ExamQuestionDifficulty where id=?";
+        return (ExamQuestionDifficulty) getCurrentSession().createQuery(sql).setInteger(0, id).list().get(0);
+    }
+
+    public List<ExamQuestionDifficulty> list() {
+        String sql = "from ExamQuestionDifficulty";
+        return getCurrentSession().createQuery(sql).list();
     }
 }
