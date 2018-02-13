@@ -90,7 +90,7 @@
                                         </td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/teacher/exam/edit/${record.id}" target="_jeesnsOpen"
-                                               title="试卷详情" width="1000px" height="680px">
+                                               title="${record.title}" width="1000px" height="680px">
                                                 <span class="label label-info"><i class="fa fa-edit green"></i></span>
                                             </a>
                                             <a class="marg-l-5" target="_jeesnsLink"

@@ -35,8 +35,8 @@
     </style>
 </head>
 <body class="hold-transition">
+<button type="button" class="btn btn-info">下载试题模板</button>
 <form id="testForm">
-    <div class="test-form-box">
         <c:if test="${not empty singleSelect}">
             <div class="jxz-box col-md-12">
                 <h4 class="tesTitle">单项选择题</h4>
@@ -395,9 +395,9 @@
                 } else {
                     $("[name='judge']").last().attr('checked', true);
                 }
-            } else if (type == 3) {
+            }/* else if (type == 3) {
                 alert(type)
-            }
+            }*/
             /*单选,多选,判断select初始化*/
             var score = $("[title='"+num+"']").parent('div').parent('div').find("input[name='score']").attr('value');
             $("[title='"+num+"']").parent('div').parent('div').find("select[name='score']").val(score);
@@ -520,10 +520,6 @@
         }
     }
 
-    /*设置select的值*/
-/*    function getScore(v) {
-        $("select[name='"+v.name+"']").attr('name', v.value)
-    }*/
 </script>
 </body>
 </html>
